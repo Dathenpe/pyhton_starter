@@ -14,6 +14,7 @@ num2 = [22, 33, 44, 55, 66, 77, 88, 99]
 print(f"the total number of list is {len(num2)}")
 print(f"Hello, {name}!")
 
+
 name =input('Enter you name')
 age =input('Enter your age')
 isadult_ =input('are you an adult?')
