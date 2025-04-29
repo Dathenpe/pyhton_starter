@@ -9,6 +9,8 @@ except Exception as e:
     print(e)
 
 
+
+
 name = input("enter your name")
 age = input("enter your age")
 print(f"my name is {name}")
@@ -39,3 +41,11 @@ else:
 name =input('Enter you name')
 age =input('Enter your age')
 isadult_ =input('are you an adult?')
+
+if __name__ == '__main__':
+    print(f"Hello, {name}!")
+    print(f"Hello, {name}! You are {age} years old.")
+    if isadult_ == 'yes':
+        print("You are an adult.")
+    else:
+        print("You are not an adult.")
