@@ -1,9 +1,13 @@
 num1 = input("enter the first number")
 num2 = input("enter the second number")
-print(f"addition of {num1} and  {num2}  is {str(int(num1) + int(num2))}")
-print(f"multiplication of  {num1}  and   {num2}  is + {str(int(num1) * int(num2))}")
-print(f"subtraction of  {num1} and {num2} is {str(int(num1) - int(num2))}")
-print(f"division of  {num1} and { num2 } is{str(int(num1) / int(num2))}")
+try:
+    print(f"addition of {num1} and  {num2}  is {str(int(num1) + int(num2))}")
+    print(f"multiplication of  {num1}  and   {num2}  is + {str(int(num1) * int(num2))}")
+    print(f"subtraction of  {num1} and {num2} is {str(int(num1) - int(num2))}")
+    print(f"division of  {num1} and { num2 } is{str(int(num1) / int(num2))}")
+except Exception as e:
+    print(e)
+
 
 name = input("enter your name")
 age = input("enter your age")
