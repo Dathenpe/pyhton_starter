@@ -19,7 +19,12 @@ print(f"the total number of list is {len(num2)}")
 print(f"Hello, {name}!")
 print(f"Hello, {name}! You are {age} years old.")
 
-if age >= 18:
+if age == None:
+    print("You are not an adult.")
+else:
+    print("You are an adult.")
+
+if age >= int('1'):
     print("You are an adult.")
 else:
     print("You are not an adult.")
