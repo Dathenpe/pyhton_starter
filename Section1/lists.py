@@ -100,5 +100,14 @@ list1.extend(list2)
 print(list1)
 list1.extend("hello")
 print(list1)
-list2.extend(300,400,500)
+list2.extend("word")
 print(list2)
+num_list[0]=100
+print(num_list)
+num_list.remove(100)
+print(num_list)
+num_list.pop()
+print(num_list)
+del num_list[0]
+del num_list
+# print(num_list)
