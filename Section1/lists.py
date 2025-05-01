@@ -109,5 +109,13 @@ print(num_list)
 num_list.pop()
 print(num_list)
 del num_list[0]
+num_list.pop(3)
+print(num_list)
 del num_list
 # print(num_list)
+lista = [22, 33, 44, 55, 66, 77, 88, 99]
+listb = [22, 33, 44, 55, 66, 77, 88, 99]
+print(lista == listb)
+print(lista is listb)
+lista.extend(listb)
+print(lista)
