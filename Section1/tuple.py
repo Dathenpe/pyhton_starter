@@ -79,3 +79,25 @@ dunis_tuple = ("apple","orange","grape", "banana")
 #iterating over tuple elements
 for fruit in dunis_tuple:
     print(fruit)
+
+
+
+#tuple of fruits(2)
+dunisfruit=["apple","orange","grape", "banana","watermelon"]
+print(dunisfruit)
+dunisfruit.append("kiwi")
+print(dunisfruit)
+dunisfruit.pop(1)
+print(dunisfruit)
+
+
+
+
+#tuple of numbers(1)
+#attempt to change the second element to 10
+dunis_tuple = (1,2,3,4)
+print(dunis_tuple)
+dunis_tuple[1] = 10
+print(dunis_tuple)
+#
+
