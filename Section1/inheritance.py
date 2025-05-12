@@ -5,21 +5,10 @@ class Person():
         self.age = age
 
     def getName(self):
-<<<<<<<<<<<<<<  ✨ Windsurf Command ⭐ >>>>>>>>>>>>>>>>
-    def getName(self):
-        """
-        Returns the name of the person
 
-        Returns:
-            str: name of the person
-        """
-        return self.name
-<<<<<<  947f16b6-e894-4f8d-b196-9c6066a788e3  >>>>>>>>
-        return self.name
 
-    def getAge(self):
 
-n     return self.age + 1
+    return self.age + 1
 
 class Student(Person):
     def __init__(self, name, age, grade):
