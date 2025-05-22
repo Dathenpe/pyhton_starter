@@ -1,0 +1,9 @@
+1 what is  the difference between a module and a package?
+2 explain the purpose of __init__.py
+3 why should from module import * be avoided?
+solution
+1 a module is a python file that contains python functions variables and classes,etc that can be imported from a package
+2 the __init__.py is a python file that is put into a directory and initializes it as a package,a package cant be recognized or imported from without it, it is also used to carry out
+some functions or messages when an import is made from the package it is in e.g print package loading succcesful
+3 the * imports all modules in a package and in some cases it can slow down or make the project heavier, and due to the fact that you dont now everything in the package you are importing
+there might be naming conflicts with other modules or classes from the imported package and your current work
