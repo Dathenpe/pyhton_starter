@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Testimonials - MyBrand</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-gradient {
+            background-image: linear-gradient(to right top, #6366f1, #3b82f6, #0ea5e9, #06b6d4, #14b8a6);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-gray-50 text-gray-800">
+
+    <header class="bg-white shadow-sm py-4">
+        <nav class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">MyBrand</a>
+            <ul class="hidden md:flex space-x-6">
+              <li><a href="{{ url_for('index') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Home</a></li>
+              <li><a href="{{ url_for('features') }}" class="text-gray-600 hover:text-indigo-600 font-semibold transition-colors">Features</a></li>
+              <li><a href="{{ url_for('testimonials') }}" class="text-indigo-600  hover:text-indigo-600 transition-colors">Testimonials</a></li>
+              <li><a href="{{ url_for('contact') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Contact</a></li>
+            </ul>
+            <button class="md:hidden text-gray-600 hover:text-indigo-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </nav>
+    </header>
+
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h1 class="text-4xl md:text-5xl font-bold text-center mb-12 text-gray-800">Hear From Our Happy Customers</h1>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-gray-100 p-8 rounded-lg shadow-md flex flex-col items-center text-center">
+                    <img class="w-24 h-24 rounded-full object-cover mb-4" src="https://via.placeholder.com/150/FF69B4/FFFFFF?text=Ava" alt="Ava Wilson">
+                    <p class="text-xl text-gray-700 italic mb-6">"Our team's productivity has skyrocketed since we started using MyBrand. The interface is intuitive, and the support team is incredibly responsive. A truly game-changing platform for our startup!"</p>
+                    <p class="font-semibold text-indigo-600 text-lg">- Ava Wilson, Founder of InnovateCorp</p>
+                </div>
+
+                <div class="bg-gray-100 p-8 rounded-lg shadow-md flex flex-col items-center text-center">
+                    <img class="w-24 h-24 rounded-full object-cover mb-4" src="https://via.placeholder.com/150/8A2BE2/FFFFFF?text=Ben" alt="Ben Carter">
+                    <p class="text-xl text-gray-700 italic mb-6">"I've tried numerous solutions, but nothing compares to the efficiency and reliability of MyBrand. It's streamlined our entire sales process and significantly reduced our operational costs. Highly recommended!"</p>
+                    <p class="font-semibold text-indigo-600 text-lg">- Ben Carter, Sales Director at Global Reach</p>
+                </div>
+
+                <div class="bg-gray-100 p-8 rounded-lg shadow-md flex flex-col items-center text-center">
+                    <img class="w-24 h-24 rounded-full object-cover mb-4" src="https://via.placeholder.com/150/3CB371/FFFFFF?text=Chloe" alt="Chloe Davis">
+                    <p class="text-xl text-gray-700 italic mb-6">"The analytics features are incredibly insightful, allowing us to make data-driven decisions faster than ever before. MyBrand is an essential tool for anyone serious about growth."</p>
+                    <p class="font-semibold text-indigo-600 text-lg">- Chloe Davis, Data Analyst at Insights Inc.</p>
+                </div>
+
+                <div class="bg-gray-100 p-8 rounded-lg shadow-md flex flex-col items-center text-center">
+                    <img class="w-24 h-24 rounded-full object-cover mb-4" src="https://via.placeholder.com/150/DAA520/FFFFFF?text=Max" alt="Max Greene">
+                    <p class="text-xl text-gray-700 italic mb-6">"From customer onboarding to ongoing support, MyBrand has elevated our customer experience. It's intuitive, powerful, and truly user-friendly. We couldn't be happier!"</p>
+                    <p class="font-semibold text-indigo-600 text-lg">- Max Greene, Customer Success Manager at CareConnect</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="custom-gradient py-20 text-white text-center">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-5xl font-extrabold leading-tight mb-6">Ready to Experience the Difference?</h2>
+            <p class="text-lg md:text-xl mb-8 opacity-90">Join thousands of satisfied customers and start your free trial today.</p>
+            <a href="contact.html" class="bg-white text-indigo-700 hover:bg-indigo-100 font-bold py-4 px-10 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+                Sign Up Now
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-gray-300 py-12">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4 text-white">MyBrand</h3>
+                <p>&copy; 2025 MyBrand. All rights reserved.</p>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4 text-white">Quick Links</h3>
+                <ul>
+                    <li><a href="index.html" class="hover:text-indigo-400">Home</a></li>
+                    <li><a href="features.html" class="hover:text-indigo-400">Features</a></li>
+                    <li><a href="testimonials.html" class="hover:text-indigo-400">Testimonials</a></li>
+                    <li><a href="contact.html" class="hover:text-indigo-400">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4 text-white">Contact Us</h3>
+                <p>123 Business Rd, Suite 456</p>
+                <p>City, State 12345</p>
+                <p>Email: info@mybrand.com</p>
+                <p>Phone: (123) 456-7890</p>
+            </div>
+        </div>
+        <div class="text-center mt-8 border-t border-gray-700 pt-6">
+            <p>Made with ❤️ using Tailwind CSS</p>
+        </div>
+    </footer>
+
+</body>
+</html>

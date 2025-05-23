@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Semi-Complex Homepage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Optional: Custom styles if needed, but aim for Tailwind utilities */
+        .custom-gradient {
+            background-image: linear-gradient(to right top, #6366f1, #3b82f6, #0ea5e9, #06b6d4, #14b8a6);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-gray-50 text-gray-800">
+
+    <header class="bg-white shadow-sm py-4">
+        <nav class="container mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-indigo-600">MyBrand</a>
+            <ul class="hidden md:flex space-x-6">
+                    <li><a href="{{ url_for('index') }}" class="text-gray-600 hover:text-indigo-600 text-indigo-600  transition-colors">Home</a></li>
+                    <li><a href="{{ url_for('features') }}" class=" text-gray-600 hover:text-indigo-600 font-semibold transition-colors">Features</a></li>
+                    <li><a href="{{ url_for('testimonials') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Testimonials</a></li>
+                    <li><a href="{{ url_for('contact') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Contact</a></li>
+            </ul>
+            <button class="md:hidden text-gray-600 hover:text-indigo-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </nav>
+    </header>
+
+    <section class="custom-gradient text-white py-20 md:py-32">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 animate-fade-in-down">
+                Revolutionize Your Workflow
+            </h1>
+            <p class="text-lg md:text-xl mb-8 opacity-90 animate-fade-in-up">
+                Streamline your processes, boost productivity, and achieve your goals with our innovative solution.
+            </p>
+            <a href="#" class="bg-white text-indigo-700 hover:bg-indigo-100 font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 animate-fade-in-up delay-200">
+                Get Started Today
+            </a>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">Powerful Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-100 p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 text-center">
+                    <div class="text-indigo-500 mb-4 flex justify-center">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Easy Integration</h3>
+                    <p class="text-gray-600">Connect seamlessly with your existing tools and workflows in minutes.</p>
+                </div>
+                <div class="bg-gray-100 p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 text-center">
+                    <div class="text-indigo-500 mb-4 flex justify-center">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Blazing Fast Performance</h3>
+                    <p class="text-gray-600">Experience unparalleled speed and responsiveness, even under heavy load.</p>
+                </div>
+                <div class="bg-gray-100 p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 text-center">
+                    <div class="text-indigo-500 mb-4 flex justify-center">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V3a1 1 0 00-1-1H9a1 1 0 00-1 1v5m4 0h.01M12 8l-3 4m3-4l3 4m-3-4v.01"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Robust Security</h3>
+                    <p class="text-gray-600">Your data is safe and secure with our industry-leading encryption protocols.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">What Our Users Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow-md flex items-start space-x-6">
+                    <img class="w-16 h-16 rounded-full object-cover" src="https://via.placeholder.com/150/FF69B4/FFFFFF?text=User1" alt="User Avatar">
+                    <div>
+                        <p class="text-lg text-gray-700 mb-4 italic">"This product transformed our operations. We've seen a significant increase in efficiency!"</p>
+                        <p class="font-semibold text-indigo-600">- Jane Doe, CEO of Tech Innovations</p>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md flex items-start space-x-6">
+                    <img class="w-16 h-16 rounded-full object-cover" src="https://via.placeholder.com/150/8A2BE2/FFFFFF?text=User2" alt="User Avatar">
+                    <div>
+                        <p class="text-lg text-gray-700 mb-4 italic">"Incredibly intuitive and powerful. A must-have for any growing business."</p>
+                        <p class="font-semibold text-indigo-600">- John Smith, Marketing Director at Global Co.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="custom-gradient py-20 text-white text-center">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-5xl font-extrabold leading-tight mb-6">Ready to Experience the Difference?</h2>
+            <p class="text-lg md:text-xl mb-8 opacity-90">Join thousands of satisfied customers and start your free trial today.</p>
+            <a href="#" class="bg-white text-indigo-700 hover:bg-indigo-100 font-bold py-4 px-10 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+                Sign Up Now
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-gray-300 py-12">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4 text-white">MyBrand</h3>
+                <p>&copy; 2025 MyBrand. All rights reserved.</p>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4 text-white">Quick Links</h3>
+                <ul>
+                    <li><a href="#" class="hover:text-indigo-400">Home</a></li>
+                    <li><a href="#" class="hover:text-indigo-400">About Us</a></li>
+                    <li><a href="#" class="hover:text-indigo-400">Services</a></li>
+                    <li><a href="#" class="hover:text-indigo-400">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4 text-white">Contact Us</h3>
+                <p>123 Business Rd, Suite 456</p>
+                <p>City, State 12345</p>
+                <p>Email: info@mybrand.com</p>
+                <p>Phone: (123) 456-7890</p>
+            </div>
+        </div>
+        <div class="text-center mt-8 border-t border-gray-700 pt-6">
+            <p>Made with ❤️ using Tailwind CSS</p>
+        </div>
+    </footer>
+
+    <script>
+        const menuButton = document.querySelector('header button');
+        const navMenu = document.querySelector('header ul');
+         menuButton.addEventListener('click', () => {
+            navMenu.classList.toggle('hidden');
+         });
+    </script>
+</body>
+</html>
