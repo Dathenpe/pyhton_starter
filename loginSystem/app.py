@@ -59,7 +59,7 @@ def login():
             session['username'] = account['username']
             flash ('Logged in successfully!', 'alert-success')
             return redirect(url_for('home'))
-        elif:
+        else:
             flash ('Incorrect username/password!', 'alert-danger')
     return render_template('login.html', msg=msg)
 @app.route('/logout')
