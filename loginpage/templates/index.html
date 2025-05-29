@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - My Flask App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { text-align: center; color: #333; }
+        nav { text-align: center; margin-bottom: 20px; }
+        nav a { margin: 0 15px; text-decoration: none; color: #007bff; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .no-users { text-align: center; color: #666; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Bysius Login Application</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a> |
+            <a href="{{ url_for('login') }}">Login</a> |
+            <a href="{{ url_for('create_account') }}">Create Account</a> |
+            <a href="{{ url_for('response') }}">Submit Details</a> |
+            <a href="{{ url_for('features') }}">Features</a> |
+            <a href="{{ url_for('testimonials') }}">Testimonials</a> |
+            <a href="{{ url_for('contact') }}">Contact</a>
+        </nav>
+
+        <h2>Registered Accounts</h2> {# Changed heading for clarity #}
+        {% if users %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th> {# Changed from Name #}
+                        <th>Email</th>
+                        {# Removed Phone Number, as it's not in login_details #}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td> {# Changed from user.name #}
+                            <td>{{ user.email }}</td>
+                            {# Removed user.phone_number #}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-users">No accounts found in the database. <a href="{{ url_for('create_account') }}">Create one here!</a></p> {# Updated message #}
+        {% endif %}
+    </div>
+</body>
+</html>

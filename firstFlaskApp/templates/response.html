@@ -9,15 +9,16 @@
     <h2><a href="./">Go home</a></h2>
 <form action="./response" method="post">
     <label for="name">Name:</label>
-    <input type="text" name="name" id="name">
+    <input type="text" name="name" id="name" required>
     <br>
     <label for="email">Email:</label>
-    <input type="text" name="email" id="email">
+    <input type="text" name="email" id="email" required>
     <br>
     <label for="number">Number:</label>
-    <input type="tel" name="number" id="number">
+    <input type="tel" name="number" id="number" required>
     <br>
     <input type="submit" value="Submit">
+    <p>{{message}}</p>
 </form>
 </body>
 </html>
