@@ -41,7 +41,7 @@ def register():
         flash('You have successfully registered!', 'alert-success')
         return redirect(url_for('login'))
     elif request.method == 'GET':
-        flash('Please fill out the form!', 'alert-danger')
+        flash = 'please fill out the form'
     return render_template('register.html', msg=flash)
 
 @app.route('/login', methods=['GET', 'POST'])
