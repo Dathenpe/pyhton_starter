@@ -1,14 +1,80 @@
 {% extends 'layout.html' %}
+{% block title %} Profile {% endblock %}
 
 {% block content %}
     <div class="container">
         <h1>Your Profile</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
         {% if account %}
             <div class="profile-details">
                 <p><strong>Username:</strong> {{ account.username }}</p>
                 <p><strong>Email:</strong> {{ account.email }}</p>
                 <p><strong>Phone:</strong> {{ account.phone_number }}</p>
+
+                {% if current_profile_image %}
+                    {% set file_extension = current_profile_image.split('.')[-1].lower() %}
+                    <h3>Current Profile Media:</h3>
+                    {% if file_extension in ['png', 'jpg', 'jpeg', 'gif'] %}
+                        <img src="{{ url_for('static', filename='uploads/' + current_profile_image) }}" alt="Profile Picture" class="profile-media-display">
+                    {% elif file_extension in ['mp4', 'avi', 'mov'] %}
+                        <video controls class="profile-media-display">
+                            <source src="{{ url_for('static', filename='uploads/' + current_profile_image) }}" type="video/{{ file_extension }}">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% else %}
+                        <p>Unknown file type for profile media.</p>
+                    {% endif %}
+                {% else %}
+                    <p>No profile media uploaded yet.</p>
+                {% endif %}
+            </div>
+
+            <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data" class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+                <label for="file-upload" class="block text-sm font-medium text-gray-700 mb-2">
+                    Upload Media (PNG, JPG, GIF, MP4, AVI, MOV)
+                </label>
+                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer hover:border-blue-500 transition-colors duration-200 ease-in-out">
+                    <div class="space-y-1 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L40 32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <div class="flex text-sm text-gray-600">
+                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                                <span>Upload a file</span>
+                                <input id="file-upload" name="image" type="file" accept=".png,.jpg,.jpeg,.gif,.mp4,.avi,.mov" class="sr-only">
+                            </label>
+                            <p class="pl-1">or drag and drop</p>
+                        </div>
+                        <p class="text-xs text-gray-500">
+                            PNG, JPG, GIF, MP4, AVI, MOV up to 10MB
+                        </p>
+                    </div>
                 </div>
+                <br>
+                <div class="text-center">
+                    <input type="submit" value="Upload File" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer">
+                </div>
+            </form>
+
+            <h3>Uploaded Files (Requires separate media table)</h3>
+            <div class="uploaded-files">
+                {% if files %}
+                    {% for file in files %}
+                       <p>{{ file.filename }} ({{ file.file_type }}) - {{ file.upload_date }}</p>
+                       {% endfor %}
+                {% else %}
+                    <p>No other files uploaded.</p>
+                {% endif %}
+            </div>
         {% else %}
             <p>No profile data found. Please ensure you are logged in.</p>
         {% endif %}
@@ -18,3 +84,12 @@
         </div>
     </div>
 {% endblock %}
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        const fileInput = document.getElementById('file-upload');
+        if (fileInput.files.length === 0) {
+            alert('Please select a file to upload!'); // Or display a more sophisticated error
+            event.preventDefault(); // Prevent form submission
+        }
+    });
+</script>

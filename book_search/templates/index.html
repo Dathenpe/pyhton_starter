@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100 p-6 font-sans">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold text-center text-blue-700 mb-8">
+            Book Search & List | Dunistech Academy Student Project
+        </h1>
+
+        <form id="searchForm" action="/search" method="GET" class="mb-12 p-6 bg-blue-50 rounded-lg shadow-sm flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+            <label for="query" class="text-lg font-medium text-blue-800 md:w-1/4">Search:</label>
+            <input type="text" id="query" name="query"
+                   placeholder="e.g., Mockingbird, Orwell"
+                   class="flex-grow p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800">
+            <button type="submit"
+                    class="w-full md:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 ease-in-out">
+                Search
+            </button>
+            <button type="button" id="clearSearchBtn" class="hidden w-full md:w-auto px-6 py-3 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-200 ease-in-out">
+                Clear Search
+            </button>
+        </form>
+
+        <div id="allBooksSection">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6 border-b pb-4">All Books List</h2>
+            <table class="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-300">Name</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-300">Author</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-300">Publisher</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-300">Price ($)</th>
+                    </tr>
+                </thead>
+                <tbody id="allBooksTableBody">
+                   {% for book in books %} {# This loop is for the initial load of all books #}
+                    <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
+                        <td class="py-3 px-4 text-gray-800 border-b border-gray-200">{{ book.name }}</td>
+                        <td class="py-3 px-4 text-gray-800 border-b border-gray-200">{{ book.author }}</td>
+                        <td class="py-3 px-4 text-gray-800 border-b border-gray-200">{{ book.publisher }}</td>
+                        <td class="py-3 px-4 text-gray-800 border-b border-gray-200">{{ "%.2f" | format(book.price) }}</td>
+                    </tr>
+                  {% else %}
+                    <tr>
+                        <td colspan="4" class="py-4 text-center text-gray-500 italic border-b border-gray-200">No books available.</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="searchResultsSection" class="hidden">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6 border-b pb-4">Search Results</h2>
+            <table class="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-300">Name</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-300">Author</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-300">Publisher</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-300">Price ($)</th>
+                    </tr>
+                </thead>
+                <tbody id="searchResultsTableBody">
+                    {# This body will be populated by JavaScript #}
+                </tbody>
+            </table>
+            <p id="noSearchResults" class="py-4 text-center text-gray-500 italic border-b border-gray-200 hidden">No books found matching your query.</p>
+        </div>
+
+    </div>
+
+    <script>
+        const searchForm = document.getElementById('searchForm');
+        const queryInput = document.getElementById('query');
+        const allBooksSection = document.getElementById('allBooksSection');
+        const searchResultsSection = document.getElementById('searchResultsSection');
+        const searchResultsTableBody = document.getElementById('searchResultsTableBody');
+        const noSearchResultsMessage = document.getElementById('noSearchResults');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+
+        // Function to display books in a given table body
+        function displayBooks(books, tableBodyElement) {
+            tableBodyElement.innerHTML = ''; // Clear previous content
+            if (books.length === 0) {
+                // If no books, display a message, but hide the table if it's the search results table
+                if (tableBodyElement === searchResultsTableBody) {
+                    noSearchResultsMessage.classList.remove('hidden');
+                    searchResultsSection.classList.remove('hidden'); // Ensure section is visible
+                    // Optionally hide the table itself if it's completely empty and message is shown
+                    tableBodyElement.closest('table').classList.add('hidden');
+                } else {
+                    tableBodyElement.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-gray-500 italic border-b border-gray-200">No books available.</td></tr>`;
+                }
+                return;
+            }
+
+            if (tableBodyElement === searchResultsTableBody) {
+                 noSearchResultsMessage.classList.add('hidden'); // Hide no results message
+                 tableBodyElement.closest('table').classList.remove('hidden'); // Show the table
+            }
+
+            books.forEach(book => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition duration-150 ease-in-out';
+                row.innerHTML = `
+                    <td class="py-3 px-4 text-gray-800 border-b border-gray-200">${book.name}</td>
+                    <td class="py-3 px-4 text-gray-800 border-b border-gray-200">${book.author}</td>
+                    <td class="py-3 px-4 text-gray-800 border-b border-gray-200">${book.publisher}</td>
+                    <td class="py-3 px-4 text-gray-800 border-b border-gray-200">$${book.price.toFixed(2)}</td>
+                `;
+                tableBodyElement.appendChild(row);
+            });
+        }
+
+        // Handle search form submission
+        searchForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission (page reload)
+
+            const query = queryInput.value.trim();
+
+            if (!query) {
+                // If query is empty, treat as clearing search
+                clearSearch();
+                return;
+            }
+
+            try {
+                const response = await fetch(`/search?query=${encodeURIComponent(query)}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const results = await response.json(); // Get JSON data
+
+                // Display search results
+                displayBooks(results, searchResultsTableBody);
+
+                // Hide all books section, show search results section
+                allBooksSection.classList.add('hidden');
+                searchResultsSection.classList.remove('hidden');
+                clearSearchBtn.classList.remove('hidden'); // Show clear button
+
+            } catch (error) {
+                console.error('Error fetching search results:', error);
+                // Optionally display an error message to the user
+                noSearchResultsMessage.textContent = "Error fetching results. Please try again.";
+                noSearchResultsMessage.classList.remove('hidden');
+                searchResultsSection.classList.remove('hidden');
+                allBooksSection.classList.add('hidden');
+                clearSearchBtn.classList.remove('hidden');
+            }
+        });
+
+        // Handle clear search button click
+        clearSearchBtn.addEventListener('click', clearSearch);
+
+        function clearSearch() {
+            queryInput.value = ''; // Clear input field
+            searchResultsTableBody.innerHTML = ''; // Clear search results table
+            noSearchResultsMessage.classList.add('hidden'); // Hide no results message
+            searchResultsSection.classList.add('hidden'); // Hide search results section
+            allBooksSection.classList.remove('hidden'); // Show all books section
+            clearSearchBtn.classList.add('hidden'); // Hide clear button
+        }
+
+        // Initial check for a query in URL (e.g., if page was refreshed with a search query)
+        // This makes the search persistent if the user bookmarks or refreshes the search results.
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialQuery = urlParams.get('query');
+        if (initialQuery) {
+            queryInput.value = initialQuery;
+            searchForm.dispatchEvent(new Event('submit')); // Trigger form submission
+        } else {
+            // If no initial query, ensure all books are displayed initially
+            // (This is usually handled by the server rendering the initial 'books' list)
+            allBooksSection.classList.remove('hidden');
+            searchResultsSection.classList.add('hidden');
+            clearSearchBtn.classList.add('hidden');
+        }
+
+    </script>
+</body>
+</html>
