@@ -102,7 +102,7 @@
         {% if current_user and current_user.is_admin %}
             {# Products Uploaded History Card (for Admins only, spans both columns) #}
             <div class="md:col-span-2 p-8 bg-white rounded-xl shadow-lg border border-gray-100">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6 pb-3 border-b-2 border-gray-200">Your Uploaded Products History</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 pb-3 border-b-2 border-gray-200">Uploaded Products History</h2>
                 {% if admin_uploaded_products %}
                 <div class="space-y-6">
                     {% for product in admin_uploaded_products %}

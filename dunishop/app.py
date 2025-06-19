@@ -472,7 +472,7 @@ def inject_global_data():
         'current_user': get_current_user(),
         'categories': fetch_categories(),
         'search_query': request.args.get('query', ''),
-        'get_cart_items': get_cart_items,  # <-- RE-ADDED THIS LINE
+        'get_cart_items': get_cart_items,
         'now': datetime.now()
     }
 
@@ -482,7 +482,7 @@ def index():
     conn = None
     products = []
     # Initialize an empty list for slider images to ensure it always exists
-    slider_images_dicts = [] # Renamed to clearly indicate it will be a list of dicts
+    slider_images_dicts = []  # Renamed to clearly indicate it will be a list of dicts
 
     try:
         conn = get_new_db_connection()
@@ -540,6 +540,7 @@ def index():
 
     # Pass the correctly structured list of dictionaries to the template
     return render_template('index.html', products=products, slider_images=slider_images_dicts)
+
 
 @app.route('/products')
 def products():
@@ -695,11 +696,13 @@ def category_products(category_id):
 
     return render_template('products.html', category=category, products=products, current_category=category)
 
+
 @app.route('/cart')
 def cart():
     cart_items = get_cart_items()
     total_amount = sum(item['price'] * item['quantity'] for item in cart_items)
     return render_template('cart.html', cart_items=cart_items, total_amount=total_amount)
+
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
@@ -742,6 +745,7 @@ def add_to_cart():
         conn.close()
     return redirect(url_for('cart'))
 
+
 @app.route('/update_cart', methods=['POST'])
 def update_cart():
     product_id = request.form.get('product_id', type=int)
@@ -766,6 +770,7 @@ def update_cart():
         session['cart'] = session_cart
         flash('Session cart updated.', 'success')
     return redirect(url_for('cart'))
+
 
 @app.route('/remove_from_cart', methods=['POST'])
 def remove_from_cart():
@@ -802,6 +807,7 @@ def remove_from_cart():
         cur.close()
         conn.close()
     return redirect(url_for('cart'))
+
 
 @app.route('/checkout', methods=['GET', 'POST'])
 @login_required
@@ -867,6 +873,7 @@ def checkout():
 
     return render_template('checkout.html', cart_items=cart_items, total_amount=total_amount)
 
+
 @app.route('/order_confirmation/<int:order_id>')
 @login_required
 def order_confirmation(order_id):
@@ -909,6 +916,7 @@ def order_confirmation(order_id):
 
     return render_template('order_confirmation.html', order=order, order_items=order_items)
 
+
 @app.route('/profile')
 @login_required
 def profile():
@@ -920,13 +928,14 @@ def profile():
     if conn is None:
         flash('Database error.', 'danger')
         # Ensure all expected variables are passed, even if empty
-        return render_template('profile.html', current_cart_items=[], orders=[], current_cart_total=0, admin_uploaded_products=[])
+        return render_template('profile.html', current_cart_items=[], orders=[], current_cart_total=0,
+                               admin_uploaded_products=[])
 
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     current_cart_items = []
     orders = []
     current_cart_total = 0
-    admin_uploaded_products = [] # Initialize for all cases
+    admin_uploaded_products = []  # Initialize for all cases
 
     try:
         if not user['is_admin']:
@@ -964,7 +973,7 @@ def profile():
                     'status': order_row['status'],
                     'items': order_items
                 })
-        else: # user['is_admin'] is True
+        else:  # user['is_admin'] is True
             # Fetch all products for admin to show as "Uploaded Products History"
             # NOTE: If your 'products' table had an 'uploaded_by_user_id' column
             # (which it currently doesn't based on your schema), you would filter
@@ -976,7 +985,7 @@ def profile():
                 JOIN categories c ON p.category_id = c.id
                 ORDER BY p.created_at DESC;
             """)
-            admin_uploaded_products = cur.fetchall() # This will be a list of dicts because of DictCursor
+            admin_uploaded_products = cur.fetchall()  # This will be a list of dicts because of DictCursor
 
     except Exception as e:
         print(f"Error fetching profile data: {e}")
@@ -990,8 +999,9 @@ def profile():
                            current_cart_items=current_cart_items,
                            current_cart_total=current_cart_total,
                            orders=orders,
-                           admin_uploaded_products=admin_uploaded_products # Pass the populated list
-                          )
+                           admin_uploaded_products=admin_uploaded_products  # Pass the populated list
+                           )
+
 
 # Important: This init_db_and_seed_data() function should only be called once,
 # e.g., when your application starts, to set up the database.
@@ -1372,7 +1382,6 @@ def login():
     return render_template('login.html')
 
 
-
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
@@ -1380,8 +1389,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-# app.py (add this route)
-
+# Admin Routes for Slider Images (DO NOT CHANGE THESE AS PER USER REQUEST)
 @app.route('/admin/slider-images')
 @admin_required
 def admin_slider_images():
@@ -1516,11 +1524,285 @@ def admin_delete_slider_image(image_id):
         finally:
             conn.close()
     return redirect(url_for('admin_slider_images'))
-# Inside app.py, add this new route:
 
+
+# --- NEW ADMIN ROUTES FOR USER MANAGEMENT ---
+
+@app.route('/admin/users')
+@admin_required
+def admin_users():
+    conn = get_new_db_connection()
+    users = []
+    if conn:
+        try:
+            cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+            cur.execute("SELECT id, username, email, is_admin FROM users ORDER BY id;")
+            users = cur.fetchall()
+            cur.close()
+        except Exception as e:
+            flash(f"Error fetching users: {e}", 'danger')
+            print(f"Error fetching users: {e}")  # Debug print
+        finally:
+            conn.close()
+    return render_template('admin/user_list.html', users=users)
+
+
+@app.route('/admin/users/add', methods=['GET', 'POST'])
+@admin_required
+def admin_add_user():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']  # New field for adding user
+        is_admin = 'is_admin' in request.form
+
+        # Basic validation
+        if not username or not email or not password:
+            flash('Username, Email, and Password are required to add a new user.', 'danger')
+            return render_template('admin/user_form.html')  # Stay on form
+
+        hashed_password = generate_password_hash(password)
+
+        conn = get_new_db_connection()
+        if conn is None:
+            flash('Database connection error.', 'danger')
+            return redirect(url_for('admin_users'))
+
+        cur = conn.cursor()
+        try:
+            cur.execute("""
+                INSERT INTO users (username, email, password_hash, is_admin)
+                VALUES (%s, %s, %s, %s);
+            """, (username, email, hashed_password, is_admin))
+            conn.commit()
+            flash('User added successfully!', 'success')
+            return redirect(url_for('admin_users'))
+        except psycopg2.errors.UniqueViolation:
+            conn.rollback()
+            flash('Username or Email already exists.', 'danger')
+        except Exception as e:
+            conn.rollback()
+            print(f"Error adding user: {e}")
+            flash('Error adding user.', 'danger')
+        finally:
+            cur.close()
+            conn.close()
+    return render_template('admin/user_form.html')  # For GET request
+
+
+@app.route('/admin/users/edit/<int:user_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_user(user_id):
+    conn = get_new_db_connection()
+    if conn is None:
+        flash('Database connection error.', 'danger')
+        return redirect(url_for('admin_users'))
+
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    user_to_edit = None
+
+    try:
+        cur.execute("SELECT id, username, email, is_admin FROM users WHERE id = %s;", (user_id,))
+        user_to_edit = cur.fetchone()
+
+        if user_to_edit is None:
+            flash('User not found.', 'danger')
+            return redirect(url_for('admin_users'))
+
+        if request.method == 'POST':
+            username = request.form['username']
+            email = request.form['email']
+            is_admin = 'is_admin' in request.form  # Check if checkbox is checked
+
+            # The form in user_form.html doesn't have a password field for editing
+            # So, we won't attempt to update password here.
+            # If you want to allow password reset, it should be a separate field/route.
+
+            cur.execute("""
+                UPDATE users
+                SET username = %s, email = %s, is_admin = %s
+                WHERE id = %s;
+            """, (username, email, is_admin, user_id))
+            conn.commit()
+            flash('User updated successfully!', 'success')
+            return redirect(url_for('admin_users'))
+
+    except psycopg2.errors.UniqueViolation:
+        conn.rollback()
+        flash('Username or Email already exists for another user.', 'danger')
+    except Exception as e:
+        conn.rollback()
+        print(f"Error editing user (ID: {user_id}): {e}")
+        flash('Error editing user.', 'danger')
+    finally:
+        cur.close()
+        conn.close()
+
+    return render_template('admin/user_form.html', user=user_to_edit)
+
+
+@app.route('/admin/users/delete/<int:user_id>', methods=['POST'])
+@admin_required
+def admin_delete_user(user_id):
+    # Prevent admin from deleting themselves if they are the only admin
+    current_admin = get_current_user()
+    if current_admin and current_admin['id'] == user_id:
+        conn = get_new_db_connection()
+        if conn:
+            cur = conn.cursor()
+            cur.execute("SELECT COUNT(*) FROM users WHERE is_admin = TRUE;")
+            admin_count = cur.fetchone()[0]
+            cur.close()
+            conn.close()
+            if admin_count == 1:
+                flash('Cannot delete the last admin user.', 'danger')
+                return redirect(url_for('admin_users'))
+
+    conn = get_new_db_connection()
+    if conn is None:
+        flash('Database connection error.', 'danger')
+        return redirect(url_for('admin_users'))
+
+    cur = conn.cursor()
+    try:
+        # Note: ON DELETE CASCADE on cart_items means cart entries will be deleted.
+        # ON DELETE SET NULL on orders means orders will remain but user_id will be null.
+        cur.execute("DELETE FROM users WHERE id = %s;", (user_id,))
+        conn.commit()
+        flash('User deleted successfully!', 'success')
+    except Exception as e:
+        conn.rollback()
+        print(f"Error deleting user (ID: {user_id}): {e}")
+        flash('Error deleting user.', 'danger')
+    finally:
+        cur.close()
+        conn.close()
+    return redirect(url_for('admin_users'))
+
+
+# --- NEW ADMIN ROUTES FOR ORDER MANAGEMENT ---
+
+@app.route('/admin/orders')
+@admin_required
+def admin_orders():
+    conn = get_new_db_connection()
+    orders = []
+    if conn:
+        try:
+            cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+            # Fetch orders with the username of the associated user
+            cur.execute("""
+                SELECT o.id, o.order_date, o.total_amount, o.shipping_address, o.status, o.payment_method,
+                       u.username AS user_username, u.email AS user_email
+                FROM orders o
+                LEFT JOIN users u ON o.user_id = u.id
+                ORDER BY o.order_date DESC;
+            """)
+            orders = cur.fetchall()
+            cur.close()
+        except Exception as e:
+            flash(f"Error fetching orders: {e}", 'danger')
+            print(f"Error fetching orders: {e}")
+        finally:
+            conn.close()
+    return render_template('admin/order_list.html', orders=orders)
+
+
+@app.route('/admin/orders/edit_status/<int:order_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_order_status(order_id):
+    conn = get_new_db_connection()
+    if conn is None:
+        flash('Database connection error.', 'danger')
+        return redirect(url_for('admin_orders'))
+
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    order = None
+
+    try:
+        cur.execute("SELECT id, status FROM orders WHERE id = %s;", (order_id,))
+        order = cur.fetchone()
+
+        if order is None:
+            flash('Order not found.', 'danger')
+            return redirect(url_for('admin_orders'))
+
+        if request.method == 'POST':
+            new_status = request.form['status']
+            valid_statuses = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled']
+
+            if new_status not in valid_statuses:
+                flash('Invalid status provided.', 'danger')
+                return redirect(url_for('admin_edit_order_status', order_id=order_id))
+
+            cur.execute("""
+                UPDATE orders
+                SET status = %s
+                WHERE id = %s;
+            """, (new_status, order_id))
+            conn.commit()
+            flash(f'Order {order_id} status updated to {new_status}!', 'success')
+            return redirect(url_for('admin_orders'))
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Error editing order status (ID: {order_id}): {e}")
+        flash('Error updating order status.', 'danger')
+    finally:
+        cur.close()
+        conn.close()
+
+    # Define possible statuses to pass to the template
+    statuses = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled']
+    return render_template('admin/order_status_form.html', order=order, statuses=statuses)
+
+
+@app.route('/admin/orders/view_details/<int:order_id>')
+@admin_required
+def admin_view_order_details(order_id):
+    conn = get_new_db_connection()
+    if conn is None:
+        flash('Database connection error.', 'danger')
+        return redirect(url_for('admin_orders'))
+
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    order = None
+    order_items = []
+
+    try:
+        cur.execute("""
+            SELECT o.id, o.order_date, o.total_amount, o.shipping_address, o.status, o.payment_method,
+                   u.username AS user_username, u.email AS user_email
+            FROM orders o
+            LEFT JOIN users u ON o.user_id = u.id
+            WHERE o.id = %s;
+        """, (order_id,))
+        order = cur.fetchone()
+
+        if order is None:
+            flash('Order not found.', 'danger')
+            return redirect(url_for('admin_orders'))
+
+        cur.execute("""
+            SELECT oi.product_name, oi.quantity, oi.price_at_purchase, p.image_url
+            FROM order_items oi
+            LEFT JOIN products p ON oi.product_id = p.id
+            WHERE oi.order_id = %s;
+        """, (order_id,))
+        order_items = cur.fetchall()
+
+    except Exception as e:
+        print(f"Error fetching order details (ID: {order_id}): {e}")
+        flash('Error fetching order details.', 'danger')
+    finally:
+        cur.close()
+        conn.close()
+
+    return render_template('admin/order_details.html', order=order, order_items=order_items)
 
 
 if __name__ == '__main__':
-     with app.app_context():
-      init_db_and_seed_data()
-     app.run(debug=True)
+    with app.app_context():
+        init_db_and_seed_data()
+    app.run(debug=True)
+

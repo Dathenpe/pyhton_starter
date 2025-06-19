@@ -13,18 +13,18 @@
     </div>
 
     <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">User Management (Placeholder)</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">User Management</h2> {# Removed Placeholder #}
         <p class="text-gray-600 mb-4">View and manage user accounts.</p>
-        <a href="#" class="bg-gray-400 text-white px-4 py-2 rounded-md cursor-not-allowed">Coming Soon</a>
+        <a href="{{ url_for('admin_users') }}" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition duration-300">Manage Users</a> {# Linked to new route #}
     </div>
 
     <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold text-gray-800 mb-3">Order Management (Placeholder)</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Order Management</h2> {# Removed Placeholder #}
         <p class="text-gray-600 mb-4">Track and update customer orders.</p>
-        <a href="#" class="bg-gray-400 text-white px-4 py-2 rounded-md cursor-not-allowed">Coming Soon</a>
+        <a href="{{ url_for('admin_orders') }}" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition duration-300">Manage Orders</a> {# Linked to new route #}
     </div>
 
-    {# NEW: Slider Image Management Section #}
+    {# Slider Image Management Section #}
     <div class="bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-xl font-semibold text-gray-800 mb-3">Slider Image Management</h2>
         <p class="text-gray-600 mb-4">Manage images and content for the homepage slider.</p>
