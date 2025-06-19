@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Flights{% endblock %} - FlightBooker</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.1.96-f/css/materialdesignicons.min.css" integrity="sha256-8YjRRcWILp2dZOd0Q==" crossorigin="anonymous"></head>
+
+<body class="bg-slate-50 font-sans antialiased text-slate-900 flex flex-col min-h-screen">
+
+    <header class="bg-white shadow-md sticky top-0 z-10">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="/" class="text-2xl font-bold text-indigo-600 hover:text-indigo-700">
+                        FlightBooker
+                    </a>
+                </div>
+
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="{% url 'index' %}" class="text-slate-600 hover:bg-slate-100 hover:text-slate-900 px-3 py-2 rounded-md text-sm font-medium">All Flights</a>
+                        <a href="#" class="text-slate-600 hover:bg-slate-100 hover:text-slate-900 px-3 py-2 rounded-md text-sm font-medium">My Bookings</a>
+                        <a href="#" class="text-slate-600 hover:bg-slate-100 hover:text-slate-900 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow">
+        {% block body %}
+            {% endblock %}
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
+            <p>&copy; {% now "Y" %} FlightBooker. All Rights Reserved.</p>
+            <p class="text-sm mt-1">Your reliable partner for flights in Lagos and beyond.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

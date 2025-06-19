@@ -1,0 +1,42 @@
+{% extends "flights/layout.html" %}
+
+{% block body %}
+<div class="bg-slate-50 min-h-screen font-sans antialiased p-8">
+    <h1 class="text-4xl font-extrabold text-gray-900 mb-6">Flight {{ flight.id }}</h1>
+    <div class="bg-white shadow-lg rounded-lg p-6 mb-8">
+        <ul class="list-none p-0 m-0">
+            <li class="text-lg text-gray-700 mb-2"><span class="font-semibold">Origin:</span> {{ flight.origin }}</li>
+            <li class="text-lg text-gray-700 mb-2"><span class="font-semibold">Destination:</span> {{ flight.destination }}</li>
+            <li class="text-lg text-gray-700"><span class="font-semibold">Duration:</span> {{ flight.duration }} minutes</li>
+        </ul>
+    </div>
+
+    <div class="bg-white shadow-lg rounded-lg p-6 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Passengers</h2>
+        <ul class="list-disc list-inside text-lg text-gray-700">
+            {% for passenger in passengers %}
+                <li class="mb-1">{{ passenger }}</li>
+            {% empty %}
+                <li>No passengers.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <form action="{% url 'book' flight.id %}" method="post" class="bg-white shadow-lg rounded-lg p-6 mb-8">
+        {% csrf_token %}
+        <div class="flex items-center space-x-4">
+            <label for="passenger-select" class="sr-only">Select Passenger</label>
+            <select name="passenger" id="passenger-select" class="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg">
+                {% for passenger in non_passengers %}
+                    <option value="{{ passenger.id }}">{{ passenger }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="inline-flex items-center px-6 py-2 border border-transparent text-lg font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Book
+            </button>
+        </div>
+    </form>
+
+    <a href="{% url 'index' %}" class="inline-block text-indigo-600 hover:text-indigo-800 text-lg font-medium">Back to Flights</a>
+</div>
+{% endblock %}

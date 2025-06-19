@@ -1,0 +1,53 @@
+{% extends "flights/layout.html" %}
+
+{% block body %}
+<div class="bg-slate-50 min-h-screen font-sans antialiased">
+    <main class="container mx-auto px-4 py-8 md:py-12">
+
+        <div class="mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Available Flights</h1>
+            <p class="text-md text-slate-500 mt-1">Showing results for Thursday, June 12, 2025</p>
+        </div>
+
+        <div class="space-y-5">
+            {% for flight in flights %}
+                <a href="{% url 'flight' flight.id %}" class="block bg-white rounded-xl shadow-md p-5 transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 mr-4">
+                                <span class="flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100 text-indigo-600 font-bold">
+                                    {{ flight.id }}
+                                </span>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-500">Flight Path</p>
+                                <div class="text-lg font-semibold text-slate-800 flex items-center gap-x-3">
+                                    <span>{{ flight.origin }}</span>
+                                    <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                                    </svg>
+                                    <span>{{ flight.destination }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 sm:mt-0 flex items-center justify-end text-right">
+                             <span class="text-sm font-medium text-indigo-600 hidden md:block mr-4">View Details</span>
+                             <svg class="h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                               <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                             </svg>
+                        </div>
+
+                    </div>
+                </a>
+            {% empty %}
+                <div class="text-center bg-white rounded-xl shadow-md p-10">
+                    <h3 class="text-xl font-semibold text-slate-700">No Flights Found</h3>
+                    <p class="text-slate-500 mt-2">There are no flights scheduled at this time. Please check back later.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+{% endblock %}

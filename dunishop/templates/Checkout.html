@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold text-gray-800 mb-6">Checkout</h1>
+
+<div class="bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto">
+    <form action="{{ url_for('place_order') }}" method="POST">
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Shipping Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="fullName" class="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                </div>
+                <div>
+                    <label for="address" class="block text-gray-700 text-sm font-bold mb-2">Address</label>
+                    <input type="text" id="address" name="address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                </div>
+                <div>
+                    <label for="city" class="block text-gray-700 text-sm font-bold mb-2">City</label>
+                    <input type="text" id="city" name="city" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                </div>
+                <div>
+                    <label for="zipCode" class="block text-gray-700 text-sm font-bold mb-2">Zip Code</label>
+                    <input type="text" id="zipCode" name="zipCode" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                </div>
+                <div>
+                    <label for="country" class="block text-gray-700 text-sm font-bold mb-2">Country</label>
+                    <input type="text" id="country" name="country" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Payment Information (Dummy)</h2>
+            <p class="text-gray-600 text-sm mb-4">
+                For demonstration purposes, payment information is not processed.
+                You can proceed by filling out the shipping details.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="cardNumber" class="block text-gray-700 text-sm font-bold mb-2">Card Number</label>
+                    <input type="text" id="cardNumber" name="cardNumber" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="XXXX XXXX XXXX XXXX" required>
+                </div>
+                <div>
+                    <label for="expDate" class="block text-gray-700 text-sm font-bold mb-2">Expiration Date (MM/YY)</label>
+                    <input type="text" id="expDate" name="expDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="MM/YY" required>
+                </div>
+                <div>
+                    <label for="cvv" class="block text-gray-700 text-sm font-bold mb-2">CVV</label>
+                    <input type="text" id="cvv" name="cvv" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="XXX" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-right">
+            <button type="submit" class="bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition duration-300">Place Order</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

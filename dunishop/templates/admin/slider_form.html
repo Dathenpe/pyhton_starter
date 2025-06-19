@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - {% if slider_image %}Edit{% else %}Add{% endif %} Slider Image{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold text-gray-800 mb-6">{% if slider_image %}Edit Slider Image{% else %}Add New Slider Image{% endif %}</h1>
+
+<div class="bg-white p-8 rounded-lg shadow-md max-w-xl mx-auto my-8">
+    <form action="{% if slider_image %}{{ url_for('admin_edit_slider_image', image_id=slider_image.id) }}{% else %}{{ url_for('admin_add_slider_image') }}{% endif %}" method="POST" enctype="multipart/form-data">
+        <div class="mb-4">
+            <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title</label>
+            <input type="text" id="title" name="title" value="{{ slider_image.title if slider_image else '' }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+        </div>
+        <div class="mb-4">
+            <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+            <textarea id="description" name="description" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">{{ slider_image.description if slider_image else '' }}</textarea>
+        </div>
+        <div class="mb-4">
+            <label for="image_file" class="block text-gray-700 text-sm font-bold mb-2">Image File</label>
+            <input type="file" id="image_file" name="image_file" accept="image/*" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            {% if slider_image and slider_image.image_url %}
+                <p class="text-sm text-gray-600 mt-2">Current Image:</p>
+                {# Ensure the image path is correctly constructed for locally uploaded files #}
+                {% if slider_image.image_url.startswith('/static/uploads/') %}
+                    <img src="{{ url_for('static', filename='uploads/' + slider_image.image_url.split('/')[-1]) }}" alt="Current Slider Image" class="mt-2 h-32 w-auto object-cover rounded shadow">
+                {% else %}
+                    {# Fallback for external URLs or if image_url is not a local upload #}
+                    <img src="{{ slider_image.image_url }}" alt="Current Slider Image" class="mt-2 h-32 w-auto object-cover rounded shadow">
+                {% endif %}
+                <input type="hidden" name="existing_image_url" value="{{ slider_image.image_url }}">
+            {% endif %}
+            <p class="text-xs text-gray-500 mt-1">Image is required. Upload a new one to replace the current.</p>
+        </div>
+        <div class="flex items-center justify-between">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                {% if slider_image %}Update Slider Image{% else %}Add Slider Image{% endif %}
+            </button>
+            <a href="{{ url_for('admin_slider_images') }}" class="inline-block align-baseline font-bold text-sm text-gray-600 hover:text-gray-800">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

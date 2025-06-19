@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}All Products{% endblock %}
+
+{% block content %}
+<section class="mb-10 p-4 bg-white rounded-lg shadow-md"> {# Added padding and background for the section #}
+    <h1 class="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">All Products</h1> {# Larger text, tighter tracking #}
+    <p class="text-lg text-gray-700 leading-relaxed max-w-3xl">Discover our complete collection of products. Find exactly what you're looking for!</p> {# Updated description #}
+</section>
+
+<section class="mb-10">
+    <h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-green-500 pb-2 inline-block">Browse Our Collection</h2> {# Changed border-bottom color to green #}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"> {# MODIFIED GRID COLUMNS HERE #}
+        {% for product in products %}
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1"> {# Smoother, more professional hover #}
+            <a href="{{ url_for('product_detail', product_id=product.id) }}" class="block relative group">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105"> {# Slightly larger image height #}
+                <div class="absolute inset-0 bg-black bg-opacity-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span class="text-white text-lg font-semibold border-2 border-white px-4 py-2 rounded-lg">View Details</span> {# Overlay for view details #}
+                </div>
+            </a>
+            <div class="p-5 flex flex-col flex-grow"> {# Added flex-col and flex-grow to make content fill card #}
+                <h3 class="text-xl font-semibold text-gray-800 mb-2 leading-tight"> {# Tighter line height #}
+                    <a href="{{ url_for('product_detail', product_id=product.id) }}" class="hover:text-orange-600 transition-colors duration-200">{{ product.name }}</a> {# Changed hover color to orange #}
+                </h3>
+                <p class="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow"> {{ product.description }}</p> {# line-clamp-3 and flex-grow for consistent height #}
+                <div class="mt-auto pt-4 border-t border-gray-200 flex flex-col items-start w-full"> {# Changed to flex-col and items-start, added w-full #}
+                    <span class="text-3xl font-extrabold text-gray-900 mb-3">${{ "%.2f"|format(product.price|float) }}</span> {# Larger, bolder price, added margin-bottom #}
+
+                    {# START MODIFICATION: Conditional Button #}
+                    {% if current_user and current_user.is_admin %}
+                    <a href="{{ url_for('admin_edit_product', product_id=product.id) }}" class="bg-red-600 text-white px-5 py-2.5 rounded-full text-base font-medium hover:bg-red-700 transition duration-300 shadow-md hover:shadow-lg w-full text-center">
+                        Edit Product
+                    </a>
+                    {% else %}
+                    <form action="{{ url_for('add_to_cart') }}" method="POST" class="w-full">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        {# For the product listing page, we usually assume a quantity of 1 for a direct "Add to Cart" button #}
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="bg-green-600 text-white px-5 py-2.5 rounded-full text-base font-medium hover:bg-green-700 transition duration-300 shadow-md hover:shadow-lg w-full">
+                            Add to Cart
+                        </button>
+                    </form>
+                    {% endif %}
+                    {# END MODIFICATION #}
+
+                </div>
+            </div>
+        </div>
+        {% else %} {# This block runs if the 'products' list is empty #}
+        <p class="text-lg text-gray-600 p-4 bg-white rounded-lg shadow-md">No products found matching your criteria. Please try a different search or category.</p> {# Improved message style #}
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
