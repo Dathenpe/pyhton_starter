@@ -820,7 +820,8 @@ def checkout():
     conn = get_new_db_connection()
     if conn is None:
         flash('Database error.', 'danger')
-        return redirect(url_for('cart'))
+        # Ensure cart_items is passed as an empty list if DB connection fails
+        return render_template('checkout.html', cart_items=[], total_amount=0)
 
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cart_items = []
@@ -828,7 +829,7 @@ def checkout():
 
     try:
         cur.execute("""
-            SELECT ci.product_id, p.name, p.price, ci.quantity
+            SELECT ci.product_id, p.name, p.price, p.image_url, ci.quantity
             FROM cart_items ci JOIN products p ON ci.product_id = p.id
             WHERE ci.user_id = %s;
         """, (user['id'],))
@@ -842,17 +843,50 @@ def checkout():
             total_amount += float(item['price']) * item['quantity']
 
         if request.method == 'POST':
-            shipping_address = request.form['shipping_address']
-            payment_method = request.form['payment_method']
+            # --- START DEBUGGING PRINTS ---
+            print("\n--- DEBUG: Checkout POST Request Data ---")
+            print("request.form:", request.form)
+            print("Cart Items (before order placement):", cart_items)
+            print("Total Amount:", total_amount)
+            # --- END DEBUGGING PRINTS ---
+
+            # Extract new shipping fields from the form
+            # Using .get() with a default value to prevent KeyError if field is somehow missing
+            # (though HTML 'required' should prevent this in most browsers)
+            full_name = request.form.get('fullName')
+            address = request.form.get('address')
+            city = request.form.get('city')
+            zip_code = request.form.get('zipCode')
+            country = request.form.get('country')
+            whatsapp_phone = request.form.get('whatsapp_phone')
+
+            # Basic validation for essential fields from the form
+            if not all([full_name, address, city, zip_code, country, whatsapp_phone]):
+                flash('Please fill in all required shipping and contact details.', 'danger')
+                # Re-render the checkout page with current cart data if validation fails
+                return render_template('checkout.html', cart_items=cart_items, total_amount=total_amount)
+
+
+            # Combine address parts into a single string for 'shipping_address'
+            shipping_address_combined = f"{full_name}, {address}, {city}, {zip_code}, {country} | WhatsApp: {whatsapp_phone}"
+
+            # Set payment_method to indicate WhatsApp contact
+            payment_method_status = "WhatsApp Contact"
+
+            print("DEBUG: Combined Shipping Address:", shipping_address_combined)
+            print("DEBUG: Payment Method Status:", payment_method_status)
 
             cur.execute("""
                 INSERT INTO orders (user_id, order_date, total_amount, shipping_address, payment_method, status)
                 VALUES (%s, %s, %s, %s, %s, %s)
                 RETURNING id;
-            """, (user['id'], datetime.now(), total_amount, shipping_address, payment_method, 'Pending'))
+            """, (user['id'], datetime.now(), total_amount, shipping_address_combined, payment_method_status,
+                  'Pending'))  # Updated fields
             order_id = cur.fetchone()['id']
+            print("DEBUG: Order ID created:", order_id)
 
             for item in cart_items:
+                print(f"DEBUG: Inserting order item: {item['name']}, Qty: {item['quantity']}, Price: {item['price']}")
                 cur.execute("""
                     INSERT INTO order_items (order_id, product_id, product_name, quantity, price_at_purchase)
                     VALUES (%s, %s, %s, %s, %s);
@@ -860,17 +894,21 @@ def checkout():
 
             cur.execute("DELETE FROM cart_items WHERE user_id = %s;", (user['id'],))
             conn.commit()
-            flash('Order placed successfully!', 'success')
+            flash('Order placed successfully! We will contact you via WhatsApp to confirm details.',
+                  'success')
             return redirect(url_for('order_confirmation', order_id=order_id))
 
     except Exception as e:
         conn.rollback()
+        # --- IMPORTANT: Print the actual exception for debugging! ---
         print(f"Error during checkout: {e}")
-        flash('There was an error processing your order.', 'danger')
+        # Pass cart_items and total_amount back to the template on error
+        flash(f'There was an error processing your order. Details: {e}', 'danger') # Display error to user
     finally:
         cur.close()
         conn.close()
 
+    # This return is for the GET request, or if initial checks fail before POST handling
     return render_template('checkout.html', cart_items=cart_items, total_amount=total_amount)
 
 

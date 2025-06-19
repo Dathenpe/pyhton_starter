@@ -6,58 +6,81 @@
 <h1 class="text-3xl font-bold text-gray-800 mb-6">Checkout</h1>
 
 <div class="bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto">
-    <form action="{{ url_for('place_order') }}" method="POST">
-        <div class="mb-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Shipping Information</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label for="fullName" class="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
-                    <input type="text" id="fullName" name="fullName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+
+    {% if cart_items %}
+    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Order Summary</h2>
+        <div class="space-y-4">
+            {% for item in cart_items %}
+            <div class="flex items-center justify-between border-b border-gray-200 pb-4">
+                <div class="flex items-center">
+                    <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-16 h-16 object-cover rounded-md mr-4">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900">{{ item.name }}</h3>
+                        <p class="text-gray-600 text-sm">Quantity: {{ item.quantity }}</p>
+                    </div>
                 </div>
-                <div>
-                    <label for="address" class="block text-gray-700 text-sm font-bold mb-2">Address</label>
-                    <input type="text" id="address" name="address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
-                </div>
-                <div>
-                    <label for="city" class="block text-gray-700 text-sm font-bold mb-2">City</label>
-                    <input type="text" id="city" name="city" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
-                </div>
-                <div>
-                    <label for="zipCode" class="block text-gray-700 text-sm font-bold mb-2">Zip Code</label>
-                    <input type="text" id="zipCode" name="zipCode" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
-                </div>
-                <div>
-                    <label for="country" class="block text-gray-700 text-sm font-bold mb-2">Country</label>
-                    <input type="text" id="country" name="country" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                <span class="text-lg font-semibold text-gray-900">${{ "%.2f"|format(item.price * item.quantity) }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="flex justify-end items-center pt-4 mt-4 border-t border-gray-200">
+            <span class="text-xl font-bold text-gray-900">Total: ${{ "%.2f"|format(total_amount) }}</span>
+        </div>
+    </div>
+    {% endif %}
+
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Contact and Shipping Details</h2>
+
+        <form action="{{ url_for('checkout') }}" method="POST">
+            <div class="mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="fullName" class="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+                    <div>
+                        <label for="address" class="block text-gray-700 text-sm font-bold mb-2">Address</label>
+                        <input type="text" id="address" name="address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+                    <div>
+                        <label for="city" class="block text-gray-700 text-sm font-bold mb-2">City</label>
+                        <input type="text" id="city" name="city" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+                    <div>
+                        <label for="zipCode" class="block text-gray-700 text-sm font-bold mb-2">Zip Code</label>
+                        <input type="text" id="zipCode" name="zipCode" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+                    <div>
+                        <label for="country" class="block text-gray-700 text-sm font-bold mb-2">Country</label>
+                        <input type="text" id="country" name="country" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+                    <div>
+                        <label for="whatsapp_phone" class="block text-gray-700 text-sm font-bold mb-2">WhatsApp Phone Number</label>
+                        <input type="tel" id="whatsapp_phone" name="whatsapp_phone"
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                               placeholder="e.g., +2348012345678" required>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mb-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Payment Information (Dummy)</h2>
-            <p class="text-gray-600 text-sm mb-4">
-                For demonstration purposes, payment information is not processed.
-                You can proceed by filling out the shipping details.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label for="cardNumber" class="block text-gray-700 text-sm font-bold mb-2">Card Number</label>
-                    <input type="text" id="cardNumber" name="cardNumber" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="XXXX XXXX XXXX XXXX" required>
-                </div>
-                <div>
-                    <label for="expDate" class="block text-gray-700 text-sm font-bold mb-2">Expiration Date (MM/YY)</label>
-                    <input type="text" id="expDate" name="expDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="MM/YY" required>
-                </div>
-                <div>
-                    <label for="cvv" class="block text-gray-700 text-sm font-bold mb-2">CVV</label>
-                    <input type="text" id="cvv" name="cvv" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="XXX" required>
-                </div>
+            <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded" role="alert">
+                <p class="font-bold">Important Notice:</p>
+                <p>Upon placing your order, we will contact you via the provided WhatsApp phone number to confirm details and arrange payment. Please ensure your WhatsApp number is accurate.</p>
             </div>
-        </div>
 
-        <div class="text-right">
-            <button type="submit" class="bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition duration-300">Place Order</button>
-        </div>
-    </form>
+            <div class="text-right">
+                <button type="submit" class="bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition duration-300">Place Order</button>
+            </div>
+        </form>
+    </div>
+    {% if not cart_items %} {# Moved this block here in case cart is empty #}
+    <div class="bg-white p-6 rounded-lg shadow-md text-center mt-8">
+        <p class="text-gray-600 text-lg">Your cart is empty. Please add items to proceed to checkout.</p>
+        <a href="{{ url_for('index') }}" class="mt-4 inline-block bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition duration-300">Continue Shopping</a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

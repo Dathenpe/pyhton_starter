@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Order Details ({{ order.id }}){% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold text-gray-800 mb-6">Order Details #{{ order.id }}</h1>
+
+<div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto mb-8">
+    {% if order %}
+    <div class="mb-6 border-b pb-4">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-3">Order Information</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+            <p><strong>Order ID:</strong> <span class="font-mono text-gray-900 bg-gray-100 px-2 py-1 rounded">{{ order.id }}</span></p>
+            <p><strong>Order Date:</strong> {{ order.order_date.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p><strong>Total Amount:</strong> <span class="text-green-600 font-bold text-xl">${{ "%.2f"|format(order.total_amount|float) }}</span></p>
+            <p><strong>Status:</strong> <span class="px-2 inline-flex text-base leading-5 font-semibold rounded-full
+                {% if order.status == 'Pending' %}bg-yellow-100 text-yellow-800
+                {% elif order.status == 'Processing' %}bg-purple-100 text-purple-800
+                {% elif order.status == 'Shipped' %}bg-green-100 text-green-800
+                {% elif order.status == 'Delivered' %}bg-green-100 text-green-800
+                {% elif order.status == 'Cancelled' %}bg-red-100 text-red-800
+                {% else %}bg-gray-100 text-gray-800{% endif %}">
+                {{ order.status }}
+            </span></p>
+            <p class="col-span-2"><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
+            <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
+            <p><strong>Customer:</strong> {{ order.user_username if order.user_username else 'N/A' }} ({{ order.user_email if order.user_email else 'N/A' }})</p>
+        </div>
+    </div>
+
+    <div class="mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-3">Ordered Items</h2>
+        {% if order_items %}
+        <div class="space-y-4">
+            {% for item in order_items %}
+            <div class="flex items-center space-x-4 border-b border-gray-100 pb-3">
+                {% if item.image_url %}
+                    <img src="{{ item.image_url }}" alt="{{ item.product_name }}" class="w-20 h-20 object-cover rounded-md shadow">
+                {% else %}
+                    <div class="w-20 h-20 bg-gray-200 flex items-center justify-center rounded-md shadow text-gray-500 text-xs text-center">No Image</div>
+                {% endif %}
+                <div class="flex-grow">
+                    <p class="font-medium text-lg text-gray-900">{{ item.product_name }}</p>
+                    <p class="text-gray-600 text-sm">Quantity: {{ item.quantity }} x ${{ "%.2f"|format(item.price_at_purchase|float) }}</p>
+                </div>
+                <span class="font-bold text-gray-900 text-lg">${{ "%.2f"|format(item.price_at_purchase|float * item.quantity) }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-600">No items found for this order.</p>
+        {% endif %}
+    </div>
+
+    <div class="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+        <a href="{{ url_for('admin_orders') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+            Back to Orders
+        </a>
+        <a href="{{ url_for('admin_edit_order_status', order_id=order.id) }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+            Update Order Status
+        </a>
+    </div>
+    {% else %}
+    <p class="text-gray-600 text-center">Order not found.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Update Order Status{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold text-gray-800 mb-6">Update Status for Order #{{ order.id }}</h1>
+
+<div class="bg-white p-8 rounded-lg shadow-md max-w-xl mx-auto my-8">
+    {% if order %}
+    <p class="mb-4 text-lg text-gray-700">Current Status: <span class="font-semibold text-green-600">{{ order.status }}</span></p>
+
+    <form action="{{ url_for('admin_edit_order_status', order_id=order.id) }}" method="POST">
+        <div class="mb-4">
+            <label for="status" class="block text-gray-700 text-sm font-bold mb-2">New Status</label>
+            <select id="status" name="status" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                {% for s in statuses %}
+                    <option value="{{ s }}" {% if order.status == s %}selected{% endif %}>{{ s }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="flex items-center justify-between">
+            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Update Status
+            </button>
+            <a href="{{ url_for('admin_orders') }}" class="inline-block align-baseline font-bold text-sm text-gray-500 hover:text-gray-800">
+                Cancel
+            </a>
+        </div>
+    </form>
+    {% else %}
+    <p class="text-gray-600 text-center">Order not found.</p>
+    {% endif %}
+</div>
+{% endblock %}
