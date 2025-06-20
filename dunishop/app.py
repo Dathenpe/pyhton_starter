@@ -1650,17 +1650,27 @@ def admin_edit_user(user_id):
         if request.method == 'POST':
             username = request.form['username']
             email = request.form['email']
-            is_admin = 'is_admin' in request.form  # Check if checkbox is checked
+            is_admin = 'is_admin' in request.form
+            new_password = request.form.get('new_password')
+            confirm_new_password = request.form.get('confirm_new_password')
 
-            # The form in user_form.html doesn't have a password field for editing
-            # So, we won't attempt to update password here.
-            # If you want to allow password reset, it should be a separate field/route.
+            update_sql = "UPDATE users SET username = %s, email = %s, is_admin = %s"
+            update_params = [username, email, is_admin]
 
-            cur.execute("""
-                UPDATE users
-                SET username = %s, email = %s, is_admin = %s
-                WHERE id = %s;
-            """, (username, email, is_admin, user_id))
+            # Handle password update only if new_password is provided
+            if new_password:
+                if new_password != confirm_new_password:
+                    flash('New passwords do not match!', 'danger')
+                    # Re-render the form with existing data and error
+                    return render_template('admin/user_form.html', user=user_to_edit)
+                hashed_password = generate_password_hash(new_password)
+                update_sql += ", password_hash = %s"
+                update_params.append(hashed_password)
+
+            update_sql += " WHERE id = %s;"
+            update_params.append(user_id)
+
+            cur.execute(update_sql, tuple(update_params))
             conn.commit()
             flash('User updated successfully!', 'success')
             return redirect(url_for('admin_users'))
@@ -1837,6 +1847,56 @@ def admin_view_order_details(order_id):
         conn.close()
 
     return render_template('admin/order_details.html', order=order, order_items=order_items)
+
+@app.route('/cancel_order/<int:order_id>', methods=['POST'])
+@login_required
+def cancel_order(order_id):
+    user = get_current_user()
+    if not user:
+        flash('Please log in to cancel an order.', 'warning')
+        return redirect(url_for('login'))
+
+    conn = get_new_db_connection()
+    if conn is None:
+        flash('Database error.', 'danger')
+        return redirect(url_for('profile'))
+
+    cur = conn.cursor()
+    try:
+        # Verify the order belongs to the current user and is in a cancellable status
+        cur.execute("SELECT user_id, status FROM orders WHERE id = %s;", (order_id,))
+        order_info = cur.fetchone()
+
+        if not order_info:
+            flash('Order not found.', 'danger')
+            return redirect(url_for('profile'))
+
+        order_user_id, current_status = order_info
+
+        if order_user_id != user['id']:
+            flash('You do not have permission to cancel this order.', 'danger')
+            return redirect(url_for('profile'))
+
+        # Only allow cancellation if status is Pending or Processing
+        if current_status not in ['Pending', 'Processing']:
+            flash(f'Order cannot be cancelled because its current status is "{current_status}".', 'warning')
+            return redirect(url_for('profile'))
+
+        cur.execute("""
+            UPDATE orders
+            SET status = 'Cancelled'
+            WHERE id = %s;
+        """, (order_id,))
+        conn.commit()
+        flash(f'Order #{order_id} has been successfully cancelled.', 'success')
+    except Exception as e:
+        conn.rollback()
+        print(f"Error cancelling order (ID: {order_id}): {e}")
+        flash(f'Error cancelling order. Details: {e}', 'danger')
+    finally:
+        cur.close()
+        conn.close()
+    return redirect(url_for('profile'))
 
 
 if __name__ == '__main__':

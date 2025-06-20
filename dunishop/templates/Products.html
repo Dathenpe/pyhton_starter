@@ -23,6 +23,7 @@
                 <h3 class="text-xl font-semibold text-gray-800 mb-2 leading-tight"> {# Tighter line height #}
                     <a href="{{ url_for('product_detail', product_id=product.id) }}" class="hover:text-orange-600 transition-colors duration-200">{{ product.name }}</a> {# Changed hover color to orange #}
                 </h3>
+                 <p class="text-gray-500 text-sm mb-2">Category: <span class="font-medium text-gray-700">{{ product.category_name }}</span></p>
                 <p class="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow"> {{ product.description }}</p> {# line-clamp-3 and flex-grow for consistent height #}
                 <div class="mt-auto pt-4 border-t border-gray-200 flex flex-col items-start w-full"> {# Changed to flex-col and items-start, added w-full #}
                     <span class="text-3xl font-extrabold text-gray-900 mb-3">${{ "%.2f"|format(product.price|float) }}</span> {# Larger, bolder price, added margin-bottom #}

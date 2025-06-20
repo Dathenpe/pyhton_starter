@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     {# Font Awesome for icons #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link icon href="slider_20250619102222_dunis_logo.png">
+    <link rel="icon" href="{{ url_for('static', filename='slider_20250619102222_dunis_logo.png') }}" type="image/png">
     <style>
         /* Your custom CSS styles remain here */
         html, body {
@@ -243,6 +243,7 @@
             <button id="sidebar-toggle" class="md:hidden text-gray-700 focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
+            <img class="md:hidden" width="10%" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkMcXsyfWpIYObytIVxRu5Xo8fUCGozxFHWw&s" alt="DuniShop Logo" class="h-10 w-auto inline-block mr-2">
 
             {# The DuniShop logo for desktop #}
             <a href="{{ url_for('index') }}" class="hidden md:block text-3xl font-extrabold text-green-700 hover:text-green-800 transition duration-200">
