@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - College Portal{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 shadow-md">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Welcome to Your Dashboard, {{ current_user.name }}!</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Profile Card -->
+        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Your Profile</h3>
+            <p class="text-gray-600 mb-2"><strong>Username:</strong> {{ current_user.name }}</p>
+            <p class="text-gray-600 mb-2"><strong>Role:</strong> <span class="uppercase font-medium text-blue-700">{{ current_user.role }}</span></p>
+            <p class="text-gray-600">This is a summary of your portal access.</p>
+        </div>
+
+        <!-- Quick Links Card -->
+        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Quick Links</h3>
+            <ul class="list-disc list-inside text-gray-700">
+                <li class="mb-2"><a href="#" class="text-blue-600 hover:underline">View Course Schedule</a></li>
+                <li class="mb-2"><a href="#" class="text-blue-600 hover:underline">Check Grades</a></li>
+                <li class="mb-2"><a href="#" class="text-blue-600 hover:underline">Access Library Resources</a></li>
+                <li class="mb-2"><a href="#" class="text-blue-600 hover:underline">Update Contact Info</a></li>
+            </ul>
+        </div>
+
+        <!-- Announcements Card -->
+        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Latest Announcements</h3>
+            <ul class="text-gray-700">
+                <li class="mb-3 border-b border-gray-300 pb-2">
+                    <p class="font-medium">Registration for Fall Semester Opens Soon!</p>
+                    <p class="text-sm text-gray-500">Date: July 1, 2025</p>
+                </li>
+                <li class="mb-3 border-b border-gray-300 pb-2">
+                    <p class="font-medium">Campus-wide Maintenance Scheduled</p>
+                    <p class="text-sm text-gray-500">Date: June 25, 2025 - 6:00 AM to 8:00 AM</p>
+                </li>
+                <li>
+                    <p class="font-medium">New Scholarship Opportunities Available</p>
+                    <p class="text-sm text-gray-500">Date: June 18, 2025</p>
+                </li>
+            </ul>
+        </div>
+
+        {% if current_user.role == 'admin' %}
+        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200 col-span-full">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Admin Actions</h3>
+            <a href="{{ url_for('admin_panel') }}" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4">
+                Go to Admin Panel
+            </a>
+        </div>
+        {% elif current_user.role == 'student' %}
+        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200 col-span-full">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Student Resources</h3>
+            <a href="{{ url_for('student_portal') }}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4">
+                Access Student Portal
+            </a>
+        </div>
+        {% elif current_user.role == 'faculty' %}
+        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200 col-span-full">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Faculty Tools</h3>
+            <a href="{{ url_for('faculty_portal') }}" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4">
+                Access Faculty Portal
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

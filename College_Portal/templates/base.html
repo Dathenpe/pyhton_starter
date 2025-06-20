@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}College Portal{% endblock %}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom CSS to enforce straight edges and Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light grey background */
+        }
+        /* No border-radius for any element */
+        * {
+            border-radius: 0 !important;
+        }
+        /* Specific styles for flash messages */
+        .flash-message {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-width: 1px;
+            border-style: solid;
+            font-weight: bold;
+        }
+        .flash-success {
+            background-color: #d1fae5; /* Green-100 */
+            border-color: #34d399; /* Green-500 */
+            color: #065f46; /* Green-900 */
+        }
+        .flash-danger {
+            background-color: #fee2e2; /* Red-100 */
+            border-color: #ef4444; /* Red-500 */
+            color: #991b1b; /* Red-900 */
+        }
+        .flash-info {
+            background-color: #e0f2fe; /* Blue-100 */
+            border-color: #3b82f6; /* Blue-500 */
+            color: #1e40af; /* Blue-900 */
+        }
+        .flash-warning {
+            background-color: #fffbeb; /* Yellow-100 */
+            border-color: #fcd34d; /* Yellow-400 */
+            color: #92400e; /* Yellow-900 */
+        }
+
+        /* Ensure form inputs also have no rounded corners explicitly */
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        button,
+        a.button-style {
+            border-radius: 0 !important;
+        }
+    </style>
+    <!-- Google Fonts for Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="flex flex-col min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{{ url_for('index') }}" class="text-white text-2xl font-bold tracking-tight">College Portal</a>
+            <div class="flex space-x-4">
+                <a href="{{ url_for('index') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 text-sm font-medium transition duration-200">Home</a>
+                {% if current_user %}
+                    <a href="{{ url_for('dashboard') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 text-sm font-medium transition duration-200">Dashboard</a>
+                    {% if current_user.role == 'admin' %}
+                    <a href="{{ url_for('admin_panel') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 text-sm font-medium transition duration-200">Admin</a>
+                    {% endif %}
+                    {% if current_user.role == 'student' %}
+                    <a href="{{ url_for('student_portal') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 text-sm font-medium transition duration-200">Student</a>
+                    {% endif %}
+                    {% if current_user.role == 'faculty' %}
+                    <a href="{{ url_for('faculty_portal') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 text-sm font-medium transition duration-200">Faculty</a>
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}" class="text-red-300 hover:bg-red-700 px-3 py-2 text-sm font-medium transition duration-200">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 text-sm font-medium transition duration-200">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="container mx-auto px-4 mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content Block -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 p-4 mt-8 text-center shadow-md">
+        <div class="container mx-auto">
+            <p>&copy; {{ now.year }} College Portal. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
