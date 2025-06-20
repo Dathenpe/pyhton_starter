@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Courses - {{ college_name }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8 font-inter">
+    <div class="max-w-7xl mx-auto space-y-8">
+        <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8 md:p-10 mb-8">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-8 text-center flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 mr-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13.5m0-13.5C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13.5C4.168 19.477 5.754 19 7.5 19s3.332.477 4.5 1.253m0-13.5C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13.5C19.832 19.477 18.246 19 16.5 19c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                Manage Courses
+            </h1>
+
+            <h2 class="text-2xl font-bold text-gray-800 mb-5 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12A9 9 0 113 12a9 9 0 0118 0z" />
+                </svg>
+                {{ 'Edit Course' if edit_course else 'Add New Course' }}
+            </h2>
+            <form method="POST" action="{{ url_for('manage_courses') }}" class="space-y-6">
+                {% if edit_course %}
+                <input type="hidden" name="course_id" value="{{ edit_course.id }}">
+                <input type="hidden" name="action" value="update">
+                {% else %}
+                <input type="hidden" name="action" value="add">
+                {% endif %}
+
+                <div>
+                    <label for="course_code" class="block text-gray-800 text-base font-bold mb-2">Course Code:</label>
+                    <input type="text" id="course_code" name="course_code" placeholder="e.g., COMP101" required
+                           value="{{ edit_course.course_code if edit_course else '' }}"
+                           class="shadow-sm appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                </div>
+                <div>
+                    <label for="title" class="block text-gray-800 text-base font-bold mb-2">Course Title:</label>
+                    <input type="text" id="title" name="title" placeholder="e.g., Introduction to Programming" required
+                           value="{{ edit_course.title if edit_course else '' }}"
+                           class="shadow-sm appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                </div>
+                <div>
+                    <label for="description" class="block text-gray-800 text-base font-bold mb-2">Description:</label>
+                    <textarea id="description" name="description" rows="3" placeholder="Brief description of the course."
+                              class="shadow-sm appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">{{ edit_course.description if edit_course else '' }}</textarea>
+                </div>
+                <div>
+                    <label for="credits" class="block text-gray-800 text-base font-bold mb-2">Credits:</label>
+                    <input type="number" id="credits" name="credits" step="0.5" min="0.5" placeholder="e.g., 3.0" required
+                           value="{{ edit_course.credits if edit_course else '' }}"
+                           class="shadow-sm appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                </div>
+                <div>
+                    <label for="faculty_id" class="block text-gray-800 text-base font-bold mb-2">Assigned Faculty:</label>
+                    <select id="faculty_id" name="faculty_id"
+                            class="shadow-sm appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                        <option value="">-- Select Faculty --</option>
+                        {% for faculty in faculty_members %}
+                        <option value="{{ faculty.id }}" {% if edit_course and edit_course.faculty_id == faculty.id %}selected{% endif %}>
+                            {{ faculty.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="flex items-center gap-4 pt-4">
+                    <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 ease-in-out">
+                        {{ 'Update Course' if edit_course else 'Add Course' }}
+                    </button>
+                    {% if edit_course %}
+                    <span onclick="window.location.href='{{ url_for('manage_courses') }}'" class="inline-flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Clear Form / Add New
+                    </span>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8 md:p-10">
+            <h2 class="text-2xl font-bold text-gray-800 mb-5 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+                Current Courses
+            </h2>
+            {% if courses %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="py-3 px-4 border-b text-left text-gray-700 font-semibold text-sm">Code</th>
+                            <th class="py-3 px-4 border-b text-left text-gray-700 font-semibold text-sm">Title</th>
+                            <th class="py-3 px-4 border-b text-left text-gray-700 font-semibold text-sm">Credits</th>
+                            <th class="py-3 px-4 border-b text-left text-gray-700 font-semibold text-sm">Faculty</th>
+                            <th class="py-3 px-4 border-b text-left text-gray-700 font-semibold text-sm">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in courses %}
+                        <tr class="hover:bg-gray-50 transition duration-150">
+                            <td class="py-3 px-4 border-b text-gray-600">{{ course.course_code }}</td>
+                            <td class="py-3 px-4 border-b text-gray-600">{{ course.title }}</td>
+                            <td class="py-3 px-4 border-b text-gray-600">{{ course.credits }}</td>
+                            <td class="py-3 px-4 border-b text-gray-600">{{ course.faculty_name }}</td>
+                            <td class="py-3 px-4 border-b flex items-center space-x-3">
+                                <span onclick="window.location.href='{{ url_for('manage_courses', edit_id=course.id) }}'" class="text-blue-600 hover:text-blue-800 underline cursor-pointer font-medium text-sm">Edit</span>
+                                <form action="{{ url_for('manage_courses') }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this course? This will also unenroll all students from it.');">
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="course_id" value="{{ course.id }}">
+                                    <button type="submit" class="text-red-600 hover:text-red-800 underline cursor-pointer font-medium text-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-center text-gray-600 py-4">No courses found. Please add new courses using the form above.</p>
+            {% endif %}
+        </div>
+
+        <div class="mt-8 text-center">
+            <button onclick="window.location.href='{{ url_for('admin_panel') }}'" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Admin Panel
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

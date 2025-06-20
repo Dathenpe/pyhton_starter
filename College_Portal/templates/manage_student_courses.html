@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Student Courses - {{ college_name }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8 font-inter">
+    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 md:p-10">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-8 text-center flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 mr-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13.5m0-13.5C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13.5C4.168 19.477 5.754 19 7.5 19s3.332.477 4.5 1.253m0-13.5C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13.5C19.832 19.477 18.246 19 16.5 19c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            Manage Student Enrollments
+        </h1>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed text-center">
+            Easily manage student course enrollments by selecting a student and then enrolling or unenrolling them from courses.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-5 mt-8 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            Select Student
+        </h2>
+        <form method="GET" action="{{ url_for('manage_student_courses') }}" class="mb-8 p-6 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
+            <div class="flex flex-col sm:flex-row items-end gap-4">
+                <div class="flex-grow w-full">
+                    <label for="student_id_select" class="block text-gray-800 text-base font-bold mb-2">Student:</label>
+                    <select id="student_id_select" name="student_id" required
+                            class="shadow-sm appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                            onchange="this.form.submit()">
+                        <option value="">-- Select a Student --</option>
+                        {% for student in students %}
+                        <option value="{{ student.id }}" {% if selected_student_id == student.id %}selected{% endif %}>
+                            {{ student.name }} (ID: {{ student.id }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% if selected_student_id %}
+                <span onclick="window.location.href='{{ url_for('manage_student_courses') }}'" class="inline-flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out cursor-pointer flex-shrink-0 w-full sm:w-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Clear Selection
+                </span>
+                {% endif %}
+            </div>
+        </form>
+
+        {% if selected_student_id %}
+        <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8 md:p-10 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-5 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.007 12.007 0 002 12c0 2.223.57 4.307 1.574 6.13M8 16.208V19a2 2 0 002 2h4a2 2 0 002-2v-2.792m-4-10.416V12.75a.75.75 0 01-.75.75H12a.75.75 0 01-.75-.75V5.792" />
+                </svg>
+                Enroll/Unenroll Courses for <span class="text-blue-700">{{ students | selectattr('id', 'equalto', selected_student_id) | first | attr('name') }}</span>
+            </h2>
+            <form method="POST" action="{{ url_for('manage_student_courses') }}" class="space-y-6">
+                <input type="hidden" name="student_id" value="{{ selected_student_id }}">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+                    <div>
+                        <label for="course_id_select" class="block text-gray-800 text-base font-bold mb-2">Course:</label>
+                        <select id="course_id_select" name="course_id" required
+                                class="shadow-sm appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                            <option value="">-- Select a Course --</option>
+                            {% for course in courses %}
+                            <option value="{{ course.id }}">{{ course.code }} - {{ course.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4 sm:pt-0">
+                        <button type="submit" name="action" value="enroll"
+                                class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-300 ease-in-out flex-grow">
+                            Enroll Student
+                        </button>
+                        <button type="submit" name="action" value="unenroll"
+                                class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-300 ease-in-out flex-grow"
+                                onclick="return confirm('Are you sure you want to unenroll this student from this course?');">
+                            Unenroll Student
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <h2 class="text-2xl font-bold text-gray-800 mb-5 mt-8 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+                Current Enrollments
+            </h2>
+            {% if student_enrollments %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="py-3 px-4 border-b text-left text-gray-700 font-semibold text-sm">Course Code</th>
+                            <th class="py-3 px-4 border-b text-left text-gray-700 font-semibold text-sm">Course Title</th>
+                            <th class="py-3 px-4 border-b text-left text-gray-700 font-semibold text-sm">Instructor</th>
+                            <th class="py-3 px-4 border-b text-left text-gray-700 font-semibold text-sm">Current Grade</th>
+                            <th class="py-3 px-4 border-b text-left text-gray-700 font-semibold text-sm">Current Score</th>
+                            <th class="py-3 px-4 border-b text-left text-gray-700 font-semibold text-sm">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for enrollment in student_enrollments %}
+                        <tr class="hover:bg-gray-50 transition duration-150">
+                            <td class="py-3 px-4 border-b text-gray-600">{{ enrollment.course_code }}</td>
+                            <td class="py-3 px-4 border-b text-gray-600">{{ enrollment.title }}</td>
+                            <td class="py-3 px-4 border-b text-gray-600">{{ enrollment.faculty_name }}</td>
+                            <td class="py-3 px-4 border-b text-gray-600">
+                                {% if enrollment.grade_value %}
+                                <span class="px-2 py-1 rounded-md text-xs font-semibold bg-blue-100 text-blue-800">
+                                    {{ enrollment.grade_value | upper }}
+                                </span>
+                                {% else %}
+                                <span class="px-2 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-800">
+                                    N/A
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td class="py-3 px-4 border-b text-gray-600">
+                                {% if enrollment.score is not none %}
+                                <span class="px-2 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-800">
+                                    {{ "%.2f" | format(enrollment.score | float) }}%
+                                </span>
+                                {% else %}
+                                <span class="px-2 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-800">
+                                    N/A
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td class="py-3 px-4 border-b">
+                                <form action="{{ url_for('manage_student_courses', student_id=selected_student_id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to unenroll this student from {{ enrollment.course_code }}?');">
+                                    <input type="hidden" name="action" value="unenroll">
+                                    <input type="hidden" name="course_id" value="{{ enrollment.course_id }}">
+                                    <input type="hidden" name="student_id" value="{{ selected_student_id }}">
+                                    <button type="submit" class="text-red-600 hover:text-red-800 underline cursor-pointer font-medium text-sm">Unenroll</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-center text-gray-600 mt-4 py-4">This student is not currently enrolled in any courses.</p>
+            {% endif %}
+        </div>
+        {% else %}
+        <p class="text-center text-gray-600 mt-8 py-8 px-4 bg-white rounded-xl shadow-lg">Please select a student from the dropdown above to manage their courses and view enrollments.</p>
+        {% endif %}
+
+        <div class="mt-8 text-center">
+            <button onclick="window.location.href='{{ url_for('admin_panel') }}'" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Admin Panel
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

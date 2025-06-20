@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Campus Life - College Portal{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8 font-inter">
+    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 md:p-10">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-8 text-center flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 mr-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Vibrant Campus Life
+        </h1>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+            Life at our college extends far beyond the classroom. We offer a rich and diverse campus environment that encourages
+            students to explore their interests, develop new skills, and build lasting relationships, fostering a truly holistic educational experience.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-5 mt-8 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h2a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2h2m3-11v8m-4-8v8m4-11V3m0 8h.01M17 19l2 2m0-2l-2 2m-2-7a2 2 0 11-4 0 2 2 0 014 0zM12 4v.01" />
+            </svg>
+            Student Organizations
+        </h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">
+            With over 100 student organizations, there's a club for every passion and interest. From academic societies and cultural groups
+            to hobby clubs and community service initiatives, you'll find countless opportunities to get involved, lead, and connect with peers.
+        </p>
+        <ul class="list-disc list-inside text-gray-700 mb-6 space-y-3 pl-4">
+            <li>Academic Clubs (e.g., Computer Science Club, Debate Society) to enhance your studies.</li>
+            <li>Cultural Associations (e.g., International Students Association, Dance Troupe) celebrating global diversity.</li>
+            <li>Special Interest Groups (e.g., Chess Club, Photography Society, Outdoor Adventure Club) for leisure and skill development.</li>
+            <li>Volunteer and Community Service Organizations to make a positive impact locally and globally.</li>
+        </ul>
+        <span onclick="window.location.href='{{ url_for('student_organizations') }}'" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold underline cursor-pointer transition duration-200">
+            View All Student Organizations
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+            </svg>
+        </span>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-5 mt-8 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Sports & Recreation
+        </h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">
+            Stay active and competitive with our wide range of intramural and varsity sports. Our state-of-the-art
+            recreational facilities include a modern fitness center, Olympic-size swimming pool, versatile basketball courts, and expansive outdoor fields, catering to all athletic interests.
+        </p>
+        <ul class="list-disc list-inside text-gray-700 mb-6 space-y-3 pl-4">
+            <li>Varsity Sports: Compete at a high level in Basketball, Soccer, Volleyball, and Track & Field.</li>
+            <li>Intramural Sports: Enjoy friendly competition in Flag Football, Badminton, and Esports.</li>
+            <li>Fitness Classes: Participate in invigorating sessions like Yoga, Zumba, and Spin to stay healthy and energized.</li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-5 mt-8 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m0 0l7 7 7-7M19 10v10a1 1 0 01-1 1h-3m-7 0h-3a2 2 0 01-2-2v-5m4 0h-4" />
+            </svg>
+            Residential Life
+        </h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">
+            Our on-campus housing provides a safe, comfortable, and supportive living environment, designed to be a home away from home.
+            Residential halls offer modern amenities, dedicated study spaces, and inviting common areas specifically designed to foster
+            community, connection, and a sense of belonging among students.
+        </p>
+        <span onclick="window.location.href='{{ url_for('housing_options') }}'" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold underline cursor-pointer transition duration-200">
+            Explore Housing Options
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+            </svg>
+        </span>
+
+        <div class="mt-8 text-center">
+            <button onclick="window.location.href='{{ url_for('index') }}'" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Home
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

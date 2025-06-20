@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Academics - College Portal{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8 font-inter">
+    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 md:p-10">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-8 text-center flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 mr-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+            </svg>
+            Academic Programs
+        </h1>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+            Our college offers a wide array of academic programs designed to prepare students for success in a rapidly evolving world.
+            We are committed to providing a rigorous, innovative, and supportive learning environment that fosters intellectual curiosity and professional growth.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-5 mt-8 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13.5m0-13.5C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13.5C4.168 19.477 5.754 19 7.5 19s3.332.477 4.5 1.253m0-13.5C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13.5C19.832 19.477 18.246 19 16.5 19c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            Undergraduate Programs
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-1.25-3M15 10V5a3 3 0 00-3-3H9a3 3 0 00-3 3v5a3 3 0 003 3h3a3 3 0 003-3zm-6 0h.01M12 10h.01M15 10h.01" />
+                    </svg>
+                    Computer Science
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Focuses on software development, algorithms, data structures, and artificial intelligence, preparing students for innovative tech careers.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 4V2m-4 2V2m-4 2V2m-9 3h2.292a8.018 8.018 0 01-.89 6.292A8.018 8.018 0 012.292 14H2c0 2.223.57 4.307 1.574 6.13M8 19v-5.5m0 0H6m2 0h2m-2 0V9.5M8 9.5a1.5 1.5 0 011.5-1.5h.5c.531 0 1.056.126 1.536.378m-2.036-.378V3m3.036 5.622c.48.252.996.378 1.536.378h.5a1.5 1.5 0 001.5-1.5V3M8 19V9.5m0 0H6m2 0h2" />
+                    </svg>
+                    Business Administration
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Comprehensive study of management, finance, marketing, and entrepreneurship, preparing future business leaders.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 11.5V14m0-2.5V7a1.5 1.5 0 013 0v6a3 3 0 006 0V7a3 3 0 00-3-3H9a2 2 0 00-2 2v7.5" />
+                    </svg>
+                    Biology
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Exploration of life sciences, including genetics, ecology, and molecular biology, for a deep understanding of living systems.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13.5m0-13.5C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13.5C4.168 19.477 5.754 19 7.5 19s3.332.477 4.5 1.253m0-13.5C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13.5C19.832 19.477 18.246 19 16.5 19c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    English Literature
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">In-depth analysis of literary works, critical theory, and creative writing, fostering strong analytical and communication skills.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.515-1.34 2.148-1.34 2.664 0l.965 2.501m.965 2.501a4 4 0 00-5.664 0L7.317 10.325m10.636 1.054a4 4 0 010 5.656l-3.242 3.242M12 21.01V22M9 3v.01M15 3v.01" />
+                    </svg>
+                    Civil Engineering
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Designing, constructing, and maintaining infrastructure projects, focusing on sustainable and innovative solutions for the modern world.</p>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-5 mt-8 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            Postgraduate Programs
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M18 14V4M6 6v8a2 2 0 002 2h4l-3 3M14 10h0l.01 0c.01 0 .01 0 .01 0z" />
+                    </svg>
+                    Master of Science in Data Science
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Advanced studies in data analysis, machine learning, and big data technologies, preparing experts for data-driven industries.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-1.25-3M15 10V5a3 3 0 00-3-3H9a3 3 0 00-3 3v5a3 3 0 003 3h3a3 3 0 003-3zm-6 0h.01M12 10h.01M15 10h.01" />
+                    </svg>
+                    PhD in Artificial Intelligence
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Research-focused program exploring the frontiers of AI and its applications, driving innovation in intelligent systems.</p>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-5 mt-8 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h2a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2h2m3-11v8m-4-8v8m4-11V3m0 8h.01M17 19l2 2m0-2l-2 2m-2-7a2 2 0 11-4 0 2 2 0 014 0zM12 4v.01" />
+            </svg>
+            Faculty & Research
+        </h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">
+            Our faculty comprises distinguished scholars and experienced professionals who are passionate about teaching and research.
+            They are actively engaged in groundbreaking research across various disciplines, offering students unique opportunities
+            to participate in cutting-edge projects and contribute to new knowledge.
+        </p>
+        <span onclick="window.location.href='{{ url_for('faculty_directory') }}'" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold cursor-pointer transition duration-200">
+            Meet Our Faculty
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+            </svg>
+        </span>
+
+        <div class="mt-8 text-center">
+            <button onclick="window.location.href='{{ url_for('index') }}'" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Home
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

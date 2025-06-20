@@ -1,37 +1,440 @@
 {% extends "base.html" %}
 
-{% block title %}Home - College Portal{% endblock %}
+{% block title %}Home - {{ college_name }}{% endblock %}
 
 {% block content %}
-<div class="bg-white p-8 shadow-md w-full h-auto min-h-[300px] flex flex-col justify-center items-center text-center">
-    <h1 class="text-4xl font-bold text-gray-800 mb-4">Welcome to the College Portal</h1>
-    <p class="text-xl text-gray-600 mb-6">Your hub for academic resources and information.</p>
+<div class="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8 font-inter">
 
-    {% if not current_user %}
-    <p class="text-lg text-gray-700 mb-8">
-        Please <a href="{{ url_for('login') }}" class="text-blue-600 hover:text-blue-800 underline font-medium">log in</a> to access your personalized dashboard.
-    </p>
-    {% else %}
-    <p class="text-lg text-gray-700 mb-8">
-        Hello, {{ current_user.name }}! Go to your <a href="{{ url_for('dashboard') }}" class="text-blue-600 hover:text-blue-800 underline font-medium">Dashboard</a>.
-    </p>
-    {% endif %}
+    <div class="max-w-7xl mx-auto space-y-8">
 
-    <div class="w-full max-w-2xl text-left mt-8">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Upcoming Events</h2>
-        {% if upcoming_events %}
-            <ul class="space-y-4">
-                {% for event in upcoming_events %}
-                <li class="border-b border-gray-200 pb-4">
-                    <h3 class="text-xl font-semibold text-gray-700">{{ event.title }}</h3>
-                    <p class="text-gray-600 text-sm mb-1">Date: {{ event.date }}</p>
-                    <p class="text-gray-700">{{ event.description }}</p>
-                </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="text-gray-600">No upcoming events at this time.</p>
-        {% endif %}
+        <!-- Hero Section -->
+        <div class="relative bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-xl shadow-lg overflow-hidden p-8 md:p-12 lg:p-16 text-center">
+            <div class="absolute inset-0 bg-pattern opacity-10"></div>
+            <div class="relative z-10">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight">Welcome to <br class="sm:hidden">{{ college_name }}!</h1>
+                <p class="text-lg sm:text-xl lg:text-2xl opacity-90 mb-8 max-w-2xl mx-auto">
+                    Your central hub for academic excellence, vibrant campus life, and personalized resources.
+                </p>
+                {% if not current_user %}
+                <p class="text-base sm:text-lg mb-6 opacity-95">
+                    Please <span onclick="window.location.href='{{ url_for('login') }}'" class="inline-block text-yellow-200 hover:text-yellow-100 underline font-semibold cursor-pointer transition duration-200 ease-in-out">log in</span> to access your personalized dashboard and features, or <span onclick="window.location.href='{{ url_for('register') }}'" class="inline-block text-yellow-200 hover:text-yellow-100 underline font-semibold cursor-pointer transition duration-200 ease-in-out">register now</span> to join our thriving community.
+                </p>
+                {% else %}
+                <p class="text-base sm:text-lg mb-6 opacity-95">
+                    Hello, {{ current_user.name }}! We're thrilled to have you back. Explore your <span onclick="window.location.href='{{ url_for('dashboard') }}'" class="inline-block text-yellow-200 hover:text-yellow-100 underline font-semibold cursor-pointer transition duration-200 ease-in-out">Dashboard</span> for quick access to your personalized content and tools.
+                </p>
+                {% endif %}
+                <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+                    {% if not current_user %}
+                    <button onclick="window.location.href='{{ url_for('register') }}'" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-3 px-8 text-lg rounded-full shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-75">
+                        Register Now
+                    </button>
+                    {% endif %}
+                    <button onclick="document.getElementById('featured-sections').scrollIntoView({ behavior: 'smooth' });" class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-semibold py-3 px-8 text-lg rounded-full shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75">
+                        Explore Features
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8 items-stretch">
+            <!-- About Our College / Quick Links (Combined for better flow) -->
+            <div class="bg-white rounded-xl shadow-md p-6 sm:p-8 w-full lg:w-2/3 flex flex-col">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    About Our College
+                </h2>
+                <p class="text-gray-700 mb-4 leading-relaxed">
+                    Welcome to our esteemed institution, a beacon of knowledge and innovation for over five decades.
+                    We are dedicated to fostering a vibrant learning environment that challenges students to excel academically,
+                    grow personally, and contribute positively to society. Our commitment to excellence is reflected in our diverse
+                    programs, world-class faculty, and state-of-the-art facilities. We pride ourselves on a supportive community
+                    that encourages critical thinking, creativity, and lifelong learning.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    We offer a wide range of undergraduate and postgraduate programs across various disciplines,
+                    designed to equip students with the skills and knowledge needed for success in an ever-evolving global landscape.
+                    From cutting-edge research opportunities to vibrant student clubs, there's something for everyone to thrive.
+                    Join our community of passionate learners and discover your potential.
+                </p>
+                <div class="mt-auto">
+                    <span onclick="window.location.href='{{ url_for('about_us') }}'" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold cursor-pointer transition duration-200">
+                        Read More About Us
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Upcoming Events & Announcements Slider -->
+            <div class="bg-blue-50 rounded-xl shadow-md p-6 sm:p-8 w-full lg:w-1/3 flex flex-col min-h-[450px] relative overflow-hidden">
+                <h2 class="text-2xl font-bold text-blue-800 mb-6 text-center flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Upcoming Events
+                </h2>
+
+                {% if upcoming_events %}
+                    <div id="event-slider" class="relative flex-grow">
+                        {% for event in upcoming_events %}
+                            <div class="event-slide absolute inset-0 flex flex-col justify-center items-center text-center p-4 opacity-0 invisible transition-opacity duration-500 ease-in-out {% if loop.first %}active{% endif %}">
+                                <h3 class="text-xl font-bold text-blue-700 mb-2">{{ event.title }}</h3>
+                                <p class="text-sm text-gray-600 mb-2">{{ event.date }}</p>
+                                <p class="text-gray-700 text-sm leading-relaxed">{{ event.description }}</p>
+                                {% if current_user and current_user.role == 'admin' %}
+                                <div class="mt-4">
+                                    <span onclick="window.location.href='{{ url_for('manage_events', edit_id=event.id) }}'" class="inline-flex items-center text-green-600 hover:text-green-800 underline text-sm cursor-pointer transition duration-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L15.232 5.232z" />
+                                        </svg>
+                                        Edit Event Details
+                                    </span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        <button id="prev-slide" class="absolute left-2 top-1/2 -translate-y-1/2 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none z-20 opacity-90 hover:opacity-100 transition duration-300 transform hover:scale-105">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button id="next-slide" class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none z-20 opacity-90 hover:opacity-100 transition duration-300 transform hover:scale-105">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+
+                        {# Pagination Dots #}
+                        <div id="slider-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
+                            {% for _ in upcoming_events %}
+                                <span class="dot w-3 h-3 bg-gray-400 rounded-full cursor-pointer hover:bg-gray-600 transition-colors duration-200"></span>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                {% else %}
+                    <p class="text-center text-gray-700 flex-grow flex items-center justify-center p-4">No upcoming events or announcements at the moment. Please check back later!</p>
+                    {% if current_user and current_user.role == 'admin' %}
+                    <div class="mt-4 text-center">
+                        <span onclick="window.location.href='{{ url_for('manage_events') }}'" class="inline-flex items-center text-green-600 hover:underline cursor-pointer transition duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12A9 9 0 113 12a9 9 0 0118 0z" />
+                            </svg>
+                            Add New Event
+                        </span>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Quick Links & Resources -->
+        <div id="featured-sections" class="bg-white rounded-xl shadow-md p-6 sm:p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.807a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.102 1.101M12 12l.042-.042L14.004 10l-1.046-1.046a.5.5 0 00-.707 0L9.954 11.293a.5.5 0 000 .707l2.121 2.121" />
+                </svg>
+                Quick Links & Key Resources
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- General Access -->
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        General Access
+                    </h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li><span onclick="window.location.href='{{ url_for('login') }}'" class="text-blue-600 hover:underline cursor-pointer">Login</span></li>
+                        <li><span onclick="window.location.href='{{ url_for('register') }}'" class="text-blue-600 hover:underline cursor-pointer">Register</span></li>
+                    </ul>
+                </div>
+
+                {% if current_user %}
+                <!-- My Portal -->
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        </svg>
+                        My Portal
+                    </h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li><span onclick="window.location.href='{{ url_for('dashboard') }}'" class="text-blue-600 hover:underline cursor-pointer">Dashboard</span></li>
+                        {% if current_user.role == 'student' %}
+                        <li><span onclick="window.location.href='{{ url_for('student_portal') }}'" class="text-blue-600 hover:underline cursor-pointer">Student Portal</span></li>
+                        {% elif current_user.role == 'faculty' %}
+                        <li><span onclick="window.location.href='{{ url_for('faculty_portal') }}'" class="text-blue-600 hover:underline cursor-pointer">Faculty Portal</span></li>
+                        {% elif current_user.role == 'admin' %}
+                        <li><span onclick="window.location.href='{{ url_for('admin_panel') }}'" class="text-blue-600 hover:underline cursor-pointer">Admin Panel</span></li>
+                        <li><span onclick="window.location.href='{{ url_for('manage_events') }}'" class="text-green-600 hover:underline cursor-pointer">Manage Events</span></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Admissions -->
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.007 12.007 0 002 12c0 2.223.57 4.307 1.574 6.13M8 16.208V19a2 2 0 002 2h4a2 2 0 002-2v-2.792m-4-10.416V12.75a.75.75 0 01-.75.75H12a.75.75 0 01-.75-.75V5.792" />
+                        </svg>
+                        Admissions
+                    </h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li><span onclick="window.location.href='{{ url_for('admissions') }}'" class="text-blue-600 hover:underline cursor-pointer">Admissions Overview</span></li>
+                        <li><span onclick="window.location.href='{{ url_for('register') }}'" class="text-blue-600 hover:underline cursor-pointer">Apply Now</span></li>
+                    </ul>
+                </div>
+
+                <!-- Academics -->
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                        </svg>
+                        Academics
+                    </h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li><span onclick="window.location.href='{{ url_for('academics') }}'" class="text-blue-600 hover:underline cursor-pointer">Academic Programs</span></li>
+                        <li><span onclick="window.location.href='{{ url_for('course_catalog') }}'" class="text-blue-600 hover:underline cursor-pointer">Course Catalog</span></li>
+                    </ul>
+                </div>
+
+                <!-- Campus Life -->
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Campus Life
+                    </h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li><span onclick="window.location.href='{{ url_for('campus_life') }}'" class="text-blue-600 hover:underline cursor-pointer">Explore Campus Life</span></li>
+                        <li><span onclick="window.location.href='{{ url_for('student_organizations') }}'" class="text-blue-600 hover:underline cursor-pointer">Student Organizations</span></li>
+                        <li><span onclick="window.location.href='{{ url_for('housing_options') }}'" class="text-blue-600 hover:underline cursor-pointer">Housing Options</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Home Page Content Sections -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Admissions Detail Card -->
+            <div class="bg-white rounded-xl shadow-md p-6 sm:p-8 flex flex-col">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13.5m0-13.5C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13.5C4.168 19.477 5.754 19 7.5 19s3.332.477 4.5 1.253m0-13.5C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13.5C19.832 19.477 18.246 19 16.5 19c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    Admissions
+                </h2>
+                <p class="text-gray-700 mb-6 leading-relaxed flex-grow">
+                    Begin your journey with us! Our admissions process is designed to be straightforward and supportive.
+                    We welcome applications from diverse backgrounds and are committed to helping you find the right program.
+                    Explore our requirements, deadlines, and financial aid options to take the first step towards your future.
+                </p>
+                <div class="mt-auto">
+                    <span onclick="window.location.href='{{ url_for('admissions') }}'" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold cursor-pointer transition duration-200">
+                        Learn More About Admissions
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <!-- Academics Detail Card -->
+            <div class="bg-white rounded-xl shadow-md p-6 sm:p-8 flex flex-col">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Academics
+                </h2>
+                <p class="text-gray-700 mb-6 leading-relaxed flex-grow">
+                    Discover a world of knowledge through our comprehensive academic programs.
+                    From foundational courses to advanced specializations, our curriculum is designed to foster
+                    intellectual growth and prepare you for a successful career. Our dedicated faculty are leaders
+                    in their fields, committed to providing exceptional education and mentorship.
+                </p>
+                <div class="mt-auto">
+                    <span onclick="window.location.href='{{ url_for('academics') }}'" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold cursor-pointer transition duration-200">
+                        Explore Academic Programs
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <!-- Campus Life Detail Card -->
+            <div class="bg-white rounded-xl shadow-md p-6 sm:p-8 flex flex-col">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Campus Life
+                </h2>
+                <p class="text-gray-700 mb-6 leading-relaxed flex-grow">
+                    Beyond academics, our vibrant campus offers a rich tapestry of experiences.
+                    Engage in student clubs, participate in sports, attend cultural events, and
+                    build lasting friendships. We believe a balanced college life is crucial for
+                    personal development and creating a memorable university experience with lifelong memories.
+                </p>
+                <div class="mt-auto">
+                    <span onclick="window.location.href='{{ url_for('campus_life') }}'" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold cursor-pointer transition duration-200">
+                        Discover Campus Life
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
+
+<style>
+    /* Pattern for Hero Section */
+    .bg-pattern {
+        background-image: radial-gradient(circle, #ffffff33 1px, transparent 1px);
+        background-size: 20px 20px;
+    }
+    /* Slider specific styles */
+    .event-slide {
+        /* Initially invisible and hidden */
+        opacity: 0;
+        visibility: hidden;
+        /* Ensure it takes full space of its relative parent */
+        width: 100%;
+        height: 100%;
+        /* Transition for opacity */
+        transition: opacity 0.5s ease-in-out;
+    }
+    .event-slide.active {
+        opacity: 1;
+        visibility: visible;
+        /* Ensure the active slide is on top */
+        z-index: 1;
+    }
+    /* Style for active dot */
+    .dot.active {
+        background-color: #3B82F6; /* Blue 500 */
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.event-slide');
+        const dotsContainer = document.getElementById('slider-dots');
+        let dots = []; // Initialize dots array
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+
+        // Hide navigation buttons and dots if there are no slides
+        if (totalSlides === 0) {
+            const nextButton = document.getElementById('next-slide');
+            const prevButton = document.getElementById('prev-slide');
+            if (nextButton) nextButton.style.display = 'none';
+            if (prevButton) prevButton.style.display = 'none';
+            if (dotsContainer) dotsContainer.style.display = 'none'; // Hide dots too
+            return; // Exit if no slides to prevent further errors
+        }
+
+        // Initialize dots if they exist
+        if (dotsContainer) {
+            dots = dotsContainer.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentSlide = index;
+                    showSlide(currentSlide);
+                    // Reset auto-slide timer on manual navigation
+                    resetAutoSlide();
+                });
+            });
+        }
+
+        function updateDots() {
+            if (dots.length > 0) {
+                dots.forEach((dot, index) => {
+                    if (index === currentSlide) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+        }
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+            updateDots(); // Update dots whenever slide changes
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        // Initialize: Show the first slide and update dots
+        showSlide(currentSlide);
+
+        // Add event listeners for navigation buttons
+        const nextButton = document.getElementById('next-slide');
+        const prevButton = document.getElementById('prev-slide');
+
+        if (nextButton) { // Check if button exists before adding listener
+            nextButton.addEventListener('click', () => {
+                nextSlide();
+                resetAutoSlide(); // Reset auto-slide timer on manual navigation
+            });
+        }
+        if (prevButton) { // Check if button exists before adding listener
+            prevButton.addEventListener('click', () => {
+                prevSlide();
+                resetAutoSlide(); // Reset auto-slide timer on manual navigation
+            });
+        }
+
+        // Auto-slide functionality
+        let slideInterval;
+
+        function startAutoSlide() {
+            slideInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+        }
+
+        function resetAutoSlide() {
+            clearInterval(slideInterval);
+            startAutoSlide();
+        }
+
+        // Start auto-slide initially
+        startAutoSlide();
+
+        // Stop auto-slide on hover
+        const sliderContainer = document.getElementById('event-slider');
+        if (sliderContainer) { // Check if container exists before adding listeners
+            sliderContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            sliderContainer.addEventListener('mouseleave', () => startAutoSlide());
+        }
+    });
+</script>
 {% endblock %}

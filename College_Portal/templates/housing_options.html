@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Housing Options - College Portal{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8 font-inter">
+    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 md:p-10">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-8 text-center flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 mr-4 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m0 0l7 7 7-7M19 10v10a1 1 0 01-1 1h-3m-7 0h-3a2 2 0 01-2-2v-5m4 0h-4" />
+            </svg>
+            On-Campus Housing Options
+        </h1>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+            Our college offers a variety of on-campus housing options designed to provide a comfortable,
+            safe, and engaging living environment for our students. Living on campus is a fantastic way to
+            immerse yourself in college life, build strong connections, and enhance your overall academic journey.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-5 mt-8 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+            Residence Halls
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m0 0l7 7 7-7M19 10v10a1 1 0 01-1 1h-3m-7 0h-3a2 2 0 01-2-2v-5m4 0h-4" />
+                    </svg>
+                    North Hall
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Traditional style dorms, popular for first-year students. Features shared rooms, common lounges, and communal bathrooms.
+                    Known for its vibrant community feel and welcoming atmosphere.
+                </p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                    </svg>
+                    East Suites
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Suite-style living with private bedrooms and a shared living area/bathroom within the suite. Ideal for upperclassmen
+                    seeking more privacy and communal space.
+                </p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.75V4.75a1 1 0 00-1-1H5a1 1 0 00-1 1v17L12 21.75zM20 17.75V4.75a1 1 0 00-1-1h-6a1 1 0 00-1 1v13L20 17.75z" />
+                    </svg>
+                    University Apartments
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Apartment-style living with full kitchens and private or shared bedrooms. Available for graduate students and older undergraduates,
+                    offering independent living experience.
+                </p>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-5 mt-8 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+            Amenities & Services
+        </h2>
+        <ul class="list-disc list-inside text-gray-700 mb-6 space-y-3 pl-4">
+            <li>24/7 Security and Resident Assistants (RAs) ensuring a safe and supportive environment.</li>
+            <li>High-speed Wi-Fi access available throughout all residential areas.</li>
+            <li>Convenient laundry facilities on each floor/building for easy access.</li>
+            <li>Comfortable study lounges and common areas designed for collaboration and relaxation.</li>
+            <li>On-site dining options with flexible meal plans to suit various dietary needs.</li>
+            <li>Prompt maintenance services to address any facility concerns.</li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-5 mt-8 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11.085 15.5H12c1.472 0 2.783-.807 3.447-2S16.924 10 16 9c-.84-.924-2.007-1.125-3.07-.384l-1.659 1.119a.75.75 0 01-1.059-.24l-.693-1.85a1.5 1.5 0 00-2.288-.624L6 6m12 0a2 2 0 100-4 2 2 0 000 4zm-8 12a2 2 0 100-4 2 2 0 000 4z" />
+            </svg>
+            Application Process
+        </h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">
+            Housing applications typically open in Spring for the upcoming academic year. Early application is highly recommended
+            due to limited availability and high demand for on-campus living.
+        </p>
+        <span onclick="window.location.href='{{ url_for('housing_application') }}'" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold underline cursor-pointer transition duration-200">
+            Apply for Housing
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+            </svg>
+        </span>
+
+        <div class="mt-8 text-center">
+            <button onclick="window.location.href='{{ url_for('campus_life') }}'" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Campus Life
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

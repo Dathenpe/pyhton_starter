@@ -4,25 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}College Portal{% endblock %}</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" xintegrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==>" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* Custom CSS to enforce straight edges and Inter font */
+        /* Custom CSS for Inter font and general styling adjustments */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5; /* Light grey background */
+            background-color: #f0f2f5; /* Light grey background consistent with other pages */
         }
-        /* No border-radius for any element */
-        * {
-            border-radius: 0 !important;
-        }
-        /* Specific styles for flash messages */
+        /* No global border-radius: 0 !important; to allow Tailwind's rounded classes */
+        /* Removed the problematic global border-radius reset to allow modern design */
+
+        /* Specific styles for flash messages - matching the new design system */
         .flash-message {
             padding: 1rem;
             margin-bottom: 1rem;
             border-width: 1px;
             border-style: solid;
-            font-weight: bold;
+            font-weight: 500; /* Medium weight */
+            border-radius: 0.5rem; /* Rounded corners for flash messages */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Subtle shadow */
         }
         .flash-success {
             background-color: #d1fae5; /* Green-100 */
@@ -39,52 +41,85 @@
             border-color: #3b82f6; /* Blue-500 */
             color: #1e40af; /* Blue-900 */
         }
-        .flash-warning {
-            background-color: #fffbeb; /* Yellow-100 */
-            border-color: #fcd34d; /* Yellow-400 */
-            color: #92400e; /* Yellow-900 */
+
+        /* Dropdown styles - enhanced for the new design */
+        .dropdown {
+            position: relative;
+            display: inline-block;
         }
 
-        /* Ensure form inputs also have no rounded corners explicitly */
-        input[type="text"],
-        input[type="password"],
-        input[type="email"],
-        button,
-        a.button-style {
-            border-radius: 0 !important;
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #ffffff; /* White background */
+            min-width: 180px; /* Slightly wider */
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            padding: 0; /* Remove default padding */
+            z-index: 10; /* Ensure it's above other content */
+            right: 0; /* Align to the right */
+            border-radius: 0.5rem; /* Rounded corners */
+            overflow: hidden; /* Ensures content respects rounded corners */
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #374151; /* Darker text for links */
+            padding: 12px 16px; /* More padding */
+            text-decoration: none;
+            display: block;
+            font-weight: 500; /* Medium font weight */
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #edf2f7; /* Light gray on hover */
+            color: #1f2937; /* Darker text on hover */
         }
     </style>
-    <!-- Google Fonts for Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="flex flex-col min-h-screen">
-    <!-- Navbar -->
-    <nav class="bg-gray-800 p-4 shadow-md">
+    <nav class="bg-gray-800 text-white p-4 shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="{{ url_for('index') }}" class="text-white text-2xl font-bold tracking-tight">College Portal</a>
-            <div class="flex space-x-4">
-                <a href="{{ url_for('index') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 text-sm font-medium transition duration-200">Home</a>
+            <a href="{{ url_for('index') }}" class="text-xl sm:text-2xl font-extrabold text-white hover:text-gray-300 transition duration-200">Evergreen University</a>
+            <div class="flex space-x-4 items-center">
+                <a href="{{ url_for('index') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition duration-200">Home</a>
                 {% if current_user %}
-                    <a href="{{ url_for('dashboard') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 text-sm font-medium transition duration-200">Dashboard</a>
-                    {% if current_user.role == 'admin' %}
-                    <a href="{{ url_for('admin_panel') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 text-sm font-medium transition duration-200">Admin</a>
-                    {% endif %}
-                    {% if current_user.role == 'student' %}
-                    <a href="{{ url_for('student_portal') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 text-sm font-medium transition duration-200">Student</a>
-                    {% endif %}
-                    {% if current_user.role == 'faculty' %}
-                    <a href="{{ url_for('faculty_portal') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 text-sm font-medium transition duration-200">Faculty</a>
-                    {% endif %}
-                    <a href="{{ url_for('logout') }}" class="text-red-300 hover:bg-red-700 px-3 py-2 text-sm font-medium transition duration-200">Logout</a>
+                    <div class="dropdown">
+                        <button class="flex items-center text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                            <i class="fas fa-user-circle mr-2 text-lg"></i> {{ current_user.name }}
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('dashboard') }}" class="flex items-center">
+                                <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                            </a>
+                            <a href="{{ url_for('logout') }}" class="flex items-center">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            </a>
+                        </div>
+                    </div>
                 {% else %}
-                    <a href="{{ url_for('login') }}" class="text-gray-300 hover:bg-gray-700 px-3 py-2 text-sm font-medium transition duration-200">Login</a>
+                    <div class="dropdown">
+                        <button class="flex items-center text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                            <i class="fas fa-user mr-2 text-lg"></i> Account
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('login') }}" class="flex items-center">
+                                <i class="fas fa-sign-in-alt mr-2"></i> Login
+                            </a>
+                            <a href="{{ url_for('register') }}" class="flex items-center">
+                                <i class="fas fa-user-plus mr-2"></i> Register
+                            </a>
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         </div>
     </nav>
 
-    <!-- Flash Messages -->
-    <div class="container mx-auto px-4 mt-4">
+    <div class="container mx-auto px-4 mt-6"> {# Increased top margin for flash messages #}
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -94,15 +129,13 @@
         {% endwith %}
     </div>
 
-    <!-- Main Content Block -->
     <main class="flex-grow container mx-auto px-4 py-8">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-300 p-4 mt-8 text-center shadow-md">
-        <div class="container mx-auto">
-            <p>&copy; {{ now.year }} College Portal. All rights reserved.</p>
+    <footer class="bg-gray-800 text-white p-4 mt-8">
+        <div class="container mx-auto text-center text-sm">
+            &copy; {{ now.year }} College Portal. All rights reserved.
         </div>
     </footer>
 </body>

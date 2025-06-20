@@ -1,72 +1,97 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard - College Portal{% endblock %}
+{% block title %}Dashboard - {{ college_name }}{% endblock %}
 
 {% block content %}
-<div class="bg-white p-8 shadow-md">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Welcome to Your Dashboard, {{ current_user.name }}!</h1>
+<div class="min-h-screen bg-gray-50 p-4 sm:p-6 md:p-8 font-inter">
+    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 md:p-10">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-8 text-center">Welcome, {{ current_user.name }}!</h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Profile Card -->
-        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200">
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Your Profile</h3>
-            <p class="text-gray-600 mb-2"><strong>Username:</strong> {{ current_user.name }}</p>
-            <p class="text-gray-600 mb-2"><strong>Role:</strong> <span class="uppercase font-medium text-blue-700">{{ current_user.role }}</span></p>
-            <p class="text-gray-600">This is a summary of your portal access.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+
+            <!-- Profile Card -->
+            <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        Your Profile
+                    </h3>
+                    <p class="text-gray-700 mb-2"><strong>Username:</strong> {{ current_user.username }}</p>
+                    <p class="text-gray-700 mb-2"><strong>Role:</strong> <span class="px-2 py-1 rounded-md text-sm font-semibold
+                        {% if current_user.role == 'admin' %}bg-purple-100 text-purple-800
+                        {% elif current_user.role == 'student' %}bg-blue-100 text-blue-800
+                        {% elif current_user.role == 'faculty' %}bg-indigo-100 text-indigo-800
+                        {% else %}bg-gray-100 text-gray-800
+                        {% endif %}
+                    ">{{ current_user.role|upper }}</span></p>
+                    <p class="text-gray-700 mb-2"><strong>Status:</strong> <span class="px-2 py-1 rounded-md text-sm font-semibold
+                        {% if current_user.status == 'active' %}bg-green-100 text-green-800
+                        {% elif current_user.status == 'suspended' %}bg-orange-100 text-orange-800
+                        {% elif current_user.status == 'expelled' %}bg-red-100 text-red-800
+                        {% else %}bg-gray-100 text-gray-800
+                        {% endif %}
+                    ">{{ current_user.status|upper }}</span></p>
+                </div>
+            </div>
+
+            <!-- Announcements Card -->
+            <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 lg:col-span-2">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6v6z" />
+                    </svg>
+                    Latest Announcements
+                </h3>
+                {% if announcements %}
+                    <ul class="space-y-4 max-h-60 overflow-y-auto pr-2">
+                        {% for announcement in announcements %}
+                        <li class="pb-3 border-b border-gray-200 last:border-b-0 last:pb-0">
+                            <p class="font-semibold text-gray-800">{{ announcement.title }}</p>
+                            <p class="text-sm text-gray-600 mt-1">{{ announcement.content }}</p>
+                            <p class="text-xs text-gray-500 mt-1">Date: {{ announcement.date }}</p>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-gray-600 text-center py-4">No recent announcements to display.</p>
+                {% endif %}
+            </div>
         </div>
 
-        <!-- Quick Links Card -->
-        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200">
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Quick Links</h3>
-            <ul class="list-disc list-inside text-gray-700">
-                <li class="mb-2"><a href="#" class="text-blue-600 hover:underline">View Course Schedule</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-600 hover:underline">Check Grades</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-600 hover:underline">Access Library Resources</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-600 hover:underline">Update Contact Info</a></li>
-            </ul>
+        <!-- Role-Based Actions Section -->
+        <div class="grid grid-cols-1 mt-6">
+            <div class="bg-blue-50 p-6 rounded-lg shadow-md border border-blue-200 text-center">
+                <h3 class="text-xl font-bold text-blue-800 mb-5">Quick Access</h3>
+                {% if current_user.role == 'admin' %}
+                    <button onclick="window.location.href='{{ url_for('admin_panel') }}'"
+                            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-300 ease-in-out">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1h2a2 2 0 012 2v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2V6a2 2 0 012-2h2V3a1 1 0 011-1zM5 8v5h10V8H5zm1.5 6a.5.5 0 100 1H7a.5.5 0 100-1H6.5zm-1 2a.5.5 0 100 1H7a.5.5 0 100-1H5.5z" clip-rule="evenodd" />
+                        </svg>
+                        Go to Admin Panel
+                    </button>
+                {% elif current_user.role == 'student' %}
+                    <button onclick="window.location.href='{{ url_for('student_portal') }}'"
+                            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 ease-in-out">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17.555 17.083A7.952 7.952 0 0110 20a7.952 7.952 0 01-7.555-2.917L2 17.083V19a1 1 0 001 1h14a1 1 0 001-1v-1.917l-.445-.001zM10 10a4 4 0 100-8 4 4 0 000 8zm0 2a8 8 0 00-8 8h16a8 8 0 00-8-8z" />
+                        </svg>
+                        Access Student Portal
+                    </button>
+                {% elif current_user.role == 'faculty' %}
+                    <button onclick="window.location.href='{{ url_for('faculty_portal') }}'"
+                            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM10 10a3 3 0 100-6 3 3 0 000 6z" />
+                            <path fill-rule="evenodd" d="M15.5 17a1 1 0 01-1 1H5.5a1 1 0 01-1-1v-2.5a.5.5 0 01.5-.5h9a.5.5 0 01.5.5V17zM5 8a.5.5 0 01.5-.5h9a.5.5 0 01.5.5v7a.5.5 0 01-.5.5h-9a.5.5 0 01-.5-.5V8z" clip-rule="evenodd" />
+                        </svg>
+                        Access Faculty Portal
+                    </button>
+                {% endif %}
+            </div>
         </div>
-
-        <!-- Announcements Card -->
-        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200">
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Latest Announcements</h3>
-            <ul class="text-gray-700">
-                <li class="mb-3 border-b border-gray-300 pb-2">
-                    <p class="font-medium">Registration for Fall Semester Opens Soon!</p>
-                    <p class="text-sm text-gray-500">Date: July 1, 2025</p>
-                </li>
-                <li class="mb-3 border-b border-gray-300 pb-2">
-                    <p class="font-medium">Campus-wide Maintenance Scheduled</p>
-                    <p class="text-sm text-gray-500">Date: June 25, 2025 - 6:00 AM to 8:00 AM</p>
-                </li>
-                <li>
-                    <p class="font-medium">New Scholarship Opportunities Available</p>
-                    <p class="text-sm text-gray-500">Date: June 18, 2025</p>
-                </li>
-            </ul>
-        </div>
-
-        {% if current_user.role == 'admin' %}
-        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200 col-span-full">
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Admin Actions</h3>
-            <a href="{{ url_for('admin_panel') }}" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4">
-                Go to Admin Panel
-            </a>
-        </div>
-        {% elif current_user.role == 'student' %}
-        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200 col-span-full">
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Student Resources</h3>
-            <a href="{{ url_for('student_portal') }}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4">
-                Access Student Portal
-            </a>
-        </div>
-        {% elif current_user.role == 'faculty' %}
-        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200 col-span-full">
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Faculty Tools</h3>
-            <a href="{{ url_for('faculty_portal') }}" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4">
-                Access Faculty Portal
-            </a>
-        </div>
-        {% endif %}
     </div>
 </div>
 {% endblock %}

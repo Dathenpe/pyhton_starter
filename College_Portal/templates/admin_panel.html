@@ -1,72 +1,107 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard - College Portal{% endblock %}
+{% block title %}Admin Panel - {{ college_name }}{% endblock %}
 
 {% block content %}
-<div class="bg-white p-8 shadow-md">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Welcome to Your Dashboard, {{ current_user.name }}!</h1>
+<div class="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8 font-inter">
+    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 md:p-10">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-8 text-center flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 mr-4 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.515-1.34 2.148-1.34 2.664 0l.965 2.501m.965 2.501a4 4 0 00-5.664 0L7.317 10.325m10.636 1.054a4 4 0 010 5.656l-3.242 3.242M12 21.01V22M9 3v.01M15 3v.01" />
+            </svg>
+            Welcome to the Admin Panel, {{ current_user.name }}!
+        </h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Profile Card -->
-        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200">
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Your Profile</h3>
-            <p class="text-gray-600 mb-2"><strong>Username:</strong> {{ current_user.name }}</p>
-            <p class="text-gray-600 mb-2"><strong>Role:</strong> <span class="uppercase font-medium text-blue-700">{{ current_user.role }}</span></p>
-            <p class="text-gray-600">This is a summary of your portal access.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Admin Quick Links -->
+            <div class="bg-blue-50 p-6 rounded-lg shadow-sm border border-blue-200 col-span-full">
+                <h3 class="text-xl font-bold text-blue-800 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.807a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.102 1.101M12 12l.042-.042L14.004 10l-1.046-1.046a.5.5 0 00-.707 0L9.954 11.293a.5.5 0 000 .707l2.121 2.121" />
+                    </svg>
+                    Admin Actions & Management
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <button onclick="window.location.href='{{ url_for('manage_events') }}'" class="inline-flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out text-center text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6v6z" />
+                        </svg>
+                        Manage Announcements
+                    </button>
+                    <button onclick="window.location.href='{{ url_for('manage_courses') }}'" class="inline-flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out text-center text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13.5m0-13.5C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13.5C4.168 19.477 5.754 19 7.5 19s3.332.477 4.5 1.253m0-13.5C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13.5C19.832 19.477 18.246 19 16.5 19c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        Manage Courses
+                    </button>
+                    <button onclick="window.location.href='{{ url_for('view_students') }}'" class="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out text-center text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h2a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2h2m3-11v8m-4-8v8m4-11V3m0 8h.01M17 19l2 2m0-2l-2 2m-2-7a2 2 0 11-4 0 2 2 0 014 0zM12 4v.01" />
+                        </svg>
+                        Manage Students
+                    </button>
+                    <button onclick="window.location.href='{{ url_for('manage_student_courses') }}'" class="inline-flex items-center justify-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out text-center text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13.5m0-13.5C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13.5C4.168 19.477 5.754 19 7.5 19s3.332.477 4.5 1.253m0-13.5C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13.5C19.832 19.477 18.246 19 16.5 19c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        Manage Student Enrollments
+                    </button>
+                    <button onclick="window.location.href='{{ url_for('assign_grades') }}'" class="inline-flex items-center justify-center bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out text-center text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.007 12.007 0 002 12c0 2.223.57 4.307 1.574 6.13M8 16.208V19a2 2 0 002 2h4a2 2 0 002-2v-2.792m-4-10.416V12.75a.75.75 0 01-.75.75H12a.75.75 0 01-.75-.75V5.792" />
+                        </svg>
+                        Assign Grades
+                    </button>
+                </div>
+            </div>
+
+            <!-- System Overview Card (now with dynamic data) -->
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-1.25-3M15 10V5a3 3 0 00-3-3H9a3 3 0 00-3 3v5a3 3 0 003 3h3a3 3 0 003-3zm-6 0h.01M12 10h.01M15 10h.01" />
+                    </svg>
+                    System Overview
+                </h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                    <li class="mb-2">Total Users: <span class="font-bold text-blue-700">{{ total_users }}</span></li>
+                    <li class="mb-2">Total Courses: <span class="font-bold text-green-700">{{ total_courses }}</span></li>
+                    <li class="mb-2">Pending Housing Applications: <span class="font-bold text-orange-700">{{ pending_housing_applications }}</span></li>
+                </ul>
+            </div>
+
+            <!-- Recent Activity Log (now dynamic) -->
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200 col-span-full md:col-span-1">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V3a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1h14a1 1 0 001-1V9a1 1 0 00-1-1h-2a3 3 0 00-3-3z" />
+                    </svg>
+                    Recent Activity Log
+                </h3>
+                {% if recent_activities %}
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                    {% for activity in recent_activities %}
+                    <li class="mb-2">
+                        <span class="font-semibold">{{ activity.posted_by }}:</span>
+                        <span class="text-gray-900">{{ activity.type }}</span> - "{{ activity.description }}" (<span class="text-gray-500 text-sm">{{ activity.timestamp }}</span>)
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-gray-600">No recent activity to display.</p>
+                {% endif %}
+            </div>
         </div>
 
-        <!-- Quick Links Card -->
-        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200">
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Quick Links</h3>
-            <ul class="list-disc list-inside text-gray-700">
-                <li class="mb-2"><a href="#" class="text-blue-600 hover:underline">View Course Schedule</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-600 hover:underline">Check Grades</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-600 hover:underline">Access Library Resources</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-600 hover:underline">Update Contact Info</a></li>
-            </ul>
+        <div class="mt-8 text-center">
+            <button onclick="window.location.href='{{ url_for('dashboard') }}'" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Dashboard
+            </button>
         </div>
-
-        <!-- Announcements Card -->
-        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200">
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Latest Announcements</h3>
-            <ul class="text-gray-700">
-                <li class="mb-3 border-b border-gray-300 pb-2">
-                    <p class="font-medium">Registration for Fall Semester Opens Soon!</p>
-                    <p class="text-sm text-gray-500">Date: July 1, 2025</p>
-                </li>
-                <li class="mb-3 border-b border-gray-300 pb-2">
-                    <p class="font-medium">Campus-wide Maintenance Scheduled</p>
-                    <p class="text-sm text-gray-500">Date: June 25, 2025 - 6:00 AM to 8:00 AM</p>
-                </li>
-                <li>
-                    <p class="font-medium">New Scholarship Opportunities Available</p>
-                    <p class="text-sm text-gray-500">Date: June 18, 2025</p>
-                </li>
-            </ul>
-        </div>
-
-        {% if current_user.role == 'admin' %}
-        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200 col-span-full">
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Admin Actions</h3>
-            <a href="{{ url_for('admin_panel') }}" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4">
-                Go to Admin Panel
-            </a>
-        </div>
-        {% elif current_user.role == 'student' %}
-        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200 col-span-full">
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Student Resources</h3>
-            <a href="{{ url_for('student_portal') }}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4">
-                Access Student Portal
-            </a>
-        </div>
-        {% elif current_user.role == 'faculty' %}
-        <div class="bg-gray-100 p-6 shadow-sm border border-gray-200 col-span-full">
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">Faculty Tools</h3>
-            <a href="{{ url_for('faculty_portal') }}" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4">
-                Access Faculty Portal
-            </a>
-        </div>
-        {% endif %}
     </div>
 </div>
 {% endblock %}
