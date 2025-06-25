@@ -12,7 +12,7 @@ from functools import wraps  # Import wraps for decorators
 app = Flask(__name__)
 
 # --- Configuration ---
-app.config['SECRET_KEY'] = 'your_super_secret_key_here_replace_me'
+app.config['SECRET_KEY'] = 'qwertyuiop1234567890'
 app.config['SESSION_COOKIE_NAME'] = 'my_shop_session'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'  # Define your upload folder
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Max upload size: 16MB (for images)
