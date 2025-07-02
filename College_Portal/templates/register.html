@@ -44,10 +44,31 @@
             <div>
                 <label for="role" class="block text-gray-800 text-base font-bold mb-2">Role:</label>
                 <select id="role" name="role" required
-                        class="shadow-sm appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                        class="shadow-sm appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                        onchange="toggleDepartmentField()">
                     <option value="">Select your role</option>
                     <option value="student" {% if selected_role == 'student' %}selected{% endif %}>Student</option>
                     <option value="admin" {% if selected_role == 'admin' %}selected{% endif %}>Admin</option>
+                </select>
+            </div>
+            <div id="department-field" style="display: {% if selected_role == 'student' %}block{% else %}none{% endif %};">
+                <label for="department" class="block text-gray-800 text-base font-bold mb-2">Department:</label>
+                <select id="department" name="department"
+                        class="shadow-sm appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                     <option value="">Select Department</option>
+                     <option value="Computer Science" {% if selected_department == 'Computer Science' %}selected{% endif %}>Computer Science</option>
+                     <option value="Engineering" {% if selected_department == 'Engineering' %}selected{% endif %}>Engineering</option>
+                     <option value="Medicine" {% if selected_department == 'Medicine' %}selected{% endif %}>Medicine</option>
+                     <option value="Arts" {% if selected_department == 'Arts' %}selected{% endif %}>Arts</option>
+                     <option value="Business Administration" {% if selected_department == 'Business Administration' %}selected{% endif %}>Business Administration</option>
+                     <option value="Physics" {% if selected_department == 'Physics' %}selected{% endif %}>Physics</option>
+                     <option value="History" {% if selected_department == 'History' %}selected{% endif %}>History</option>
+                     <option value="Environmental Science" {% if selected_department == 'Environmental Science' %}selected{% endif %}>Environmental Science</option>
+                     <option value="Mathematics" {% if selected_department == 'Mathematics' %}selected{% endif %}>Mathematics</option>
+                     <option value="Psychology" {% if selected_department == 'Psychology' %}selected{% endif %}>Psychology</option>
+                     <option value="Chemistry" {% if selected_department == 'Chemistry' %}selected{% endif %}>Chemistry</option>
+                     <option value="English Literature" {% if selected_department == 'English Literature' %}selected{% endif %}>English Literature</option>
+                     <option value="Biology" {% if selected_department == 'Biology' %}selected{% endif %}>Biology</option>
                 </select>
             </div>
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
@@ -62,4 +83,21 @@
         </form>
     </div>
 </div>
+
+<script>
+    function toggleDepartmentField() {
+        var roleSelect = document.getElementById('role');
+        var departmentField = document.getElementById('department-field');
+        if (roleSelect.value === 'student') {
+            departmentField.style.display = 'block';
+            document.getElementById('department').setAttribute('required', 'required');
+        } else {
+            departmentField.style.display = 'none';
+            document.getElementById('department').removeAttribute('required');
+        }
+    }
+
+    // Call on page load to set initial state
+    document.addEventListener('DOMContentLoaded', toggleDepartmentField);
+</script>
 {% endblock %}

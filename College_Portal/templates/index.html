@@ -79,7 +79,7 @@
                 </h2>
 
                 {% if upcoming_events %}
-                    <div id="event-slider" class="relative flex-grow">
+                    <div id="event-slider" class="relative flex-grow pb-10"> {# Added padding-bottom for dots #}
                         {% for event in upcoming_events %}
                             <div class="event-slide absolute inset-0 flex flex-col justify-center items-center text-center p-4 opacity-0 invisible transition-opacity duration-500 ease-in-out {% if loop.first %}active{% endif %}">
                                 <h3 class="text-xl font-bold text-blue-700 mb-2">{{ event.title }}</h3>
@@ -98,22 +98,24 @@
                             </div>
                         {% endfor %}
 
-                        <button id="prev-slide" class="absolute left-2 top-1/2 -translate-y-1/2 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none z-20 opacity-90 hover:opacity-100 transition duration-300 transform hover:scale-105">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                            </svg>
-                        </button>
-                        <button id="next-slide" class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none z-20 opacity-90 hover:opacity-100 transition duration-300 transform hover:scale-105">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </button>
-
-                        {# Pagination Dots #}
-                        <div id="slider-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
-                            {% for _ in upcoming_events %}
-                                <span class="dot w-3 h-3 bg-gray-400 rounded-full cursor-pointer hover:bg-gray-600 transition-colors duration-200"></span>
-                            {% endfor %}
+                        {# Moved buttons to the bottom, next to dots, and changed styling #}
+                        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center space-x-3 z-20 w-full justify-center">
+                            <button id="prev-slide" class="bg-blue-600 text-white p-2 rounded-full shadow-md hover:bg-blue-700 focus:outline-none opacity-90 hover:opacity-100 transition duration-300 transform hover:scale-110">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            {# Pagination Dots #}
+                            <div id="slider-dots" class="flex space-x-2">
+                                {% for _ in upcoming_events %}
+                                    <span class="dot w-3 h-3 bg-gray-400 rounded-full cursor-pointer hover:bg-gray-600 transition-colors duration-200"></span>
+                                {% endfor %}
+                            </div>
+                            <button id="next-slide" class="bg-blue-600 text-white p-2 rounded-full shadow-md hover:bg-blue-700 focus:outline-none opacity-90 hover:opacity-100 transition duration-300 transform hover:scale-110">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
                         </div>
 
                     </div>

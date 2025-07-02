@@ -31,7 +31,7 @@
                         <option value="">-- Select a Student --</option>
                         {% for student in students %}
                         <option value="{{ student.id }}" {% if selected_student_id == student.id %}selected{% endif %}>
-                            {{ student.name }} (ID: {{ student.id }})
+                            {{ student.name }} ({{ student.department if student.department else 'N/A' }} - Matric No: {{ student.matric_number if student.matric_number else 'N/A' }})
                         </option>
                         {% endfor %}
                     </select>
@@ -53,7 +53,14 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.007 12.007 0 002 12c0 2.223.57 4.307 1.574 6.13M8 16.208V19a2 2 0 002 2h4a2 2 0 002-2v-2.792m-4-10.416V12.75a.75.75 0 01-.75.75H12a.75.75 0 01-.75-.75V5.792" />
                 </svg>
-                Enroll/Unenroll Courses for <span class="text-blue-700">{{ students | selectattr('id', 'equalto', selected_student_id) | first | attr('name') }}</span>
+                Enroll/Unenroll Courses for <span class="text-blue-700">
+                    {% set selected_student = students | selectattr('id', 'equalto', selected_student_id) | first %}
+                    {% if selected_student %}
+                        {{ selected_student.name }} ({{ selected_student.department if selected_student.department else 'N/A' }} - Matric No: {{ selected_student.matric_number if selected_student.matric_number else 'N/A' }})
+                    {% else %}
+                        Selected Student
+                    {% endif %}
+                </span>
             </h2>
             <form method="POST" action="{{ url_for('manage_student_courses') }}" class="space-y-6">
                 <input type="hidden" name="student_id" value="{{ selected_student_id }}">
