@@ -123,6 +123,7 @@ def init_db():
                 UNIQUE (user_id, course_id)
             );
         """)
+
         conn.commit()
         print("Enrollments table checked/created.")
 
